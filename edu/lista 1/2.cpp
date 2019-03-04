@@ -4,13 +4,12 @@
 double f(double x) {
     return sin(x);
 }
-
 double bisection(double a, double b) {
     double c = a;
 
-    if (f(a) * f(b) >= 0) {
-        std::cout << "Error" << std::endl;
-    }
+//   if (sin(a) * sin(b) >= 0) {
+//        std::cout << "Error" << std::endl;
+//   }
 
     do {
         c = (b + a)/2;
@@ -20,12 +19,10 @@ double bisection(double a, double b) {
             b = c;
         else
             a = c;
-    } while (b - a >= 0.1);
+    } while (b - a >= 0.00001);
+
     return c;
 }
-
-
-
 
 int main() {
     std::cout << bisection(-0.2, 0.8) << std::endl;
