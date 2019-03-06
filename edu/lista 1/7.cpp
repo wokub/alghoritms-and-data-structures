@@ -1,16 +1,50 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
-void wielomianki(getVal, saveVal (?)) {
-// Walkthrough:
-// Tworzymy dwa wektory, do których wczytujemy dane z naszych plików
-// Sprawdzamy, czy s¹ takiej samej d³ugoœci
-// Tworzymy pêtlê for od 0 do d³ugoœci pliku b (?)
-// Tworzymy kolejn¹ pêtlê w pêtli, od 0 do d³ugoœci pliku b (?)
-// Tworzymy zmienn¹ tymczasow¹ poza scopem i dodajemy do niej co ka¿d¹ iteracjê kolejne wartoœci z plików a i b
-// Pushbackujemy nasz tymczasowy result
-// Zapisujemy
+
+// Funkcja zwracajÄ…ca wektor double zawierajÄ…cy dane z pliku
+std::vector<double> loadFile(std::string file) {
+    vector<double> fileData;
+    ifstream textFile(file);
+    
+    if(newTextFile.is_open()) {
+        string num;
+        string::size_type size;
+        
+        do {
+            double _num = stod(num); // stod - parse string na double'a
+            fileData.push_back(_num);
+        } while (getline(newTextFile, num));
+
+        textFile.close();
+    }
+    return fileData;
+}
+
+std:::vector<double> factor(std::vector<double> & v1, std::vector<dobuel> & v2) {
+    int len;
+    std::vector<double> container;
+    
+    if(v1.size() > v2.size()) {
+        len = v2.size();
+    } else 
+        len = v1.size();
+
+    for(int i = 0; i < length; i++){
+        container.push_back(v1[i] * v2[i]); // c(x)=a(x)b(x)
+    }
+    return container;
 }
 
 int main() {
-
+    std::vector<double> a = loadFile("a.txt");
+    std::vector<double> b = loadFile("b.txt");
+    std::vector<double> c = factor(a, b);
+    ofstream saveFile("c.txt");
+    for(int i = 0; i < c.size(); i++) {
+        saveFile << c[i] << std::endl;
+    }
+    saveFile.close();
 }

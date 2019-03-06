@@ -34,9 +34,7 @@ int main() {
         tab[i] = i+1; // ++
     }
 
-    int m = 20;
-
-    maxValueR(tab, m, 0, n);
+    maxValueR(tab, 20, 0, n);
 
     return 0;
 }

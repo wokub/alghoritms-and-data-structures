@@ -3,33 +3,32 @@
 struct lnode {
     int key;
     lnode *next;
-
-    lnode(int value, lnode *l = nullptr) {
-        key = value;
-        next = l;
-    }
 };
 
-int nty(int n, lnode *l) {
-    int m = 1;
-    while (l != nullptr) {  // unikamy exception
-        if (m != n){
-            m++;
-            l = (*l).next;    // zwracamy next
-        }
-        else
-            return (*l).key;  // zwracamy key, znajduj¹cy siê w struct lnode
-    }
-    return 0;
+int nty(int n, lnode * l) {
+    if(!(l -> next) && n > 0) {  
+        return 0;
+    } else {
+        if(n == 0) { return l->key; }
+               
+        nty(n-1, l->next);
+    }   
 }
-
+  
 int main() {
+    lnode first;
+    lnode second;
+    lnode third;
 
-    lnode trzy(3);
-    lnode dwa(2, &trzy);
-    lnode jeden(1, &dwa);
+    first.key = 1;
+    second.key = 2;
+    third.key = 3;
 
-    std::cout << nty(1, &jeden) << std::endl;
-    std::cout << nty(2, &jeden) << std::endl;
+    first.next = NULL;
+    second.next = &first;
+    third.next = &second;
 
+    std::cout << nty(2, &third) << std::endl;
+    
+    return 0;
 }

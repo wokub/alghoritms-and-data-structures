@@ -1,29 +1,34 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
-double f(double x) {
-    return sin(x);
+double f(double x) { return 2 * x - 1; }
+
+double root(double a, double b) {
+	double _f;
+	double _a = f(a); 
+	double _b = f(b);
+	double x = (a + b) / 2;
+	
+	while (fabs(a - b) > 0.000001) {
+		x = (a + b) / 2;
+		_f = f(x);
+		
+		if (fabs(_f) < 0.000001) {
+			break;
+		} else if (_a * _b < 0) {
+			b = x;
+		} else {
+			a = x; 
+			_a = _f;
+		}
+	}
+	return x;
 }
-double bisection(double a, double b) {
-    double c = a;
 
-//   if (sin(a) * sin(b) >= 0) {
-//        std::cout << "Error" << std::endl;
-//   }
 
-    do {
-        c = (b + a)/2;
-        if (f(c) == 0)
-            return c;
-        else if (f(a) * f(c) < 0)
-            b = c;
-        else
-            a = c;
-    } while (b - a >= 0.00001);
+int main(void) {
+	std::cout << "f(0) : " << f(0) << "\nf(1) : " << f(1) << std::endl;
+	std::cout << "Msc zerowe: " << root(2, 20) << std::endl;
 
-    return c;
-}
-
-int main() {
-    std::cout << bisection(-0.2, 0.8) << std::endl;
+	return 0;
 }

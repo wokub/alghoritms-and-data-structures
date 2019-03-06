@@ -1,14 +1,15 @@
+// Pseudokod z zajęć
 bool* sito(bool prime[n]) {
     bool prime[n];
 
-    for(i = 0; i <= n; i++) {
+    for(int i = 0; i <= n; i++) {
         prime[i] = true;
     }
 
     for(int i = 2; i*i <= n; i++) {
         if(prime[i] == true) {
             for(int j = i * i; j <= n; j += i) {
-                pprime[j] = false;
+                prime[j] = false;
             }
         }
     }
@@ -18,5 +19,4 @@ bool* sito(bool prime[n]) {
 }
 
 int main () {
-    std::cout <<
 }
