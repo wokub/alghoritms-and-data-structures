@@ -1,33 +1,34 @@
-NAZEWNICTWO
-
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-using namespace std;
+std::vector<int> countASCII(std::string file) {
+    std::vector<int> tab(255);
+    std::string line;
+    std::ifstream loadFile(file);
+
+    if (loadFile) {
+        while (getline( loadFile, line )){
+            for(int i = 0; i < line.length(); i++) {
+                tab[(int)line[i]] += 1;
+            }
+        }
+        loadFile.close();
+    }
+    return tab;
+}
+
+void showResult(std::vector<int> tab) {
+    for(int i = 0; i < tab.size(); i++) {
+        if(tab[i]!=0) {
+            std::cout << (char)i << ": " << tab[i] << std::endl;
+        }
+    }
+}
 
 int main() {
-    vector<int> tab(255);
-
-    string line;
-    ifstream myfile( "bez_nazwy.txt" );
-    
-    if (myfile) {
-        while (getline( myfile, line )) {  
-            for(unsigned int j = 0; j < line.length(); j++) {
-                tab[(int)line[j]] += 1;        
-            }   
-        }
-        myfile.close();
-    }
-
-    for(unsigned int i = 0; i < tab.size(); i++) {
-        if(tab[i] != 0) {
-            cout<<(char)i<<": "<<tab[i]<<endl;
-        }
-        
-    }
+    showResult(countASCII("9.txt"));
 
     return 0;
 }
