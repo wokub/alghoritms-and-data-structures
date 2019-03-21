@@ -1,0 +1,2246 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
+<meta http-equiv="Content-Language" content="pl">
+<title>Algorytmy i Struktury Danych - Przechodzenie drzew binarnych: DFS</title>
+<meta name="description" content="Artykuł opisuje różne algorytmy wyszukujące informacje w zbiorach danych takich jak przedziały liczbowe, tablice, macierze, wektory, listy, drzewa, grafy, teksty itp.">
+<meta name="keywords" content="wyszukiwanie, algorytm, programowanie, c++, pascal, basic, informatyka, liceum, matura, olimpiada, matematyka">
+<link rel="stylesheet" type="text/css" href="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/001.css">
+<script src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/osd.js"></script><script src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/ca-pub-2048408300128807.js"></script><script src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/show_ads_impl.js" id="google_shimpl"></script><script type="text/javascript" language="javascript" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/h.js"></script>
+<!-- base href="https://eduinf.waw.pl/inf/alg/001_search/0109.php" -->
+        <script async="" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2048408300128807",
+    enable_page_level_ads: true
+  });
+</script>
+<link rel="preload" href="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/integrator.js" as="script"><script type="text/javascript" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/integrator.js"></script><link rel="preload" href="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/integrator_002.js" as="script"><script type="text/javascript" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/integrator_002.js"></script><link rel="preload" href="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/show_ads_impl.js" as="script"></head>
+
+<body><table style="border-collapse: collapse" width="100%" cellpadding="0" border="0">
+  <tbody><tr>
+    <td style="text-align: left" class="menu_l" width="164" valign="top"><a href="http://www.i-lo.tarnow.pl/"><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/i-lo_logo.gif" style="margin-top: 12px" alt="Do strony głównej I LO w Tarnowie" width="164" height="170" border="0"></a></td>
+    <td style="text-align: center" class="menu_m" valign="top" nowrap="nowrap">
+    <a class="exit" href="https://eduinf.waw.pl/inf/index.php"><span>Wyjście </span></a><a class="cont" href="https://eduinf.waw.pl/inf/alg/001_search/index.php"><span>Spis treści </span></a><a class="prev" href="https://eduinf.waw.pl/inf/alg/001_search/0108.php"><span>Poprzedni </span></a><a class="next" href="https://eduinf.waw.pl/inf/alg/001_search/0110.php"><span>Następny </span></a>
+<p><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/000_title.jpg" alt="tytuł" width="511" height="195" border="0"></p>
+    <span class="small">Prezentowane materiały są przeznaczone dla uczniów szkół ponadgimnazjalnych</span>.<br>
+    Autor artykułu: mgr Jerzy Wałaszek,&nbsp; wersja 2.0</td>
+    <td style="padding:8px; text-align: center" class="menu_r" width="200" valign="top" nowrap="nowrap">
+    <p class="small" style="line-height: 100%; margin-bottom: 0">&nbsp;&#169;2014 mgr Jerzy Wałaszek<br>
+    I LO w Tarnowie</p>
+    <p><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/000_logo.gif" alt="logo" width="134" height="102" border="0"></p>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center" colspan="3" height="100">
+<script async="" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/adsbygoogle.js"></script>
+<!-- normal_page -->
+<ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-2048408300128807" data-ad-slot="9328341371" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:1200px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:1200px;background-color:transparent;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0px;width:1200px;height:90px;" width="1200" height="90" frameborder="0"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</td>
+  </tr>
+  </tbody></table>
+<h1 class="sb1">Przechodzenie drzew binarnych &#8211; DFS</h1>
+<hr size="1" color="#336699">
+<table style="border-collapse: collapse" class="sb1" id="table248" cellspacing="0" cellpadding="4" border="0">
+	<tbody><tr>
+		<td bgcolor="#CCCCCC"><b>Tematy pokrewne</b></td>
+<td bgcolor="#CCCCCC">&nbsp;</td>
+<td bgcolor="#CCCCCC"><b>Podrozdziały</b></td>
+</tr>
+	<tr>
+		<td valign="top"><a href="https://eduinf.waw.pl/inf/alg/001_search/0107.php">Drzewa</a><br>
+		<a href="https://eduinf.waw.pl/inf/alg/001_search/0108.php">Podstawowe pojęcia dotyczące drzew</a><br>
+					<font color="#FF0000"><b>Przechodzenie drzew binarnych &#8211; DFS: 
+					pre-order, in-order, post-order</b></font><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0110.php">Przechodzenie drzew binarnych &#8211; BFS</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0111.php">Badanie drzewa binarnego</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0112.php">Prezentacja drzew binarnych</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0113.php">Kopiec</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0118.php">Drzewa wyrażeń</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0114.php">Drzewa poszukiwań binarnych &#8211; BST</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0115.php">Tworzenie drzewa BST</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0116.php">Równoważenie drzewa BST &#8211; algorytm DSW</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0117.php">Proste zastosowania drzew BST</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0119.php">Drzewa AVL</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0120.php">Drzewa Splay</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0121.php">Drzewa Czerwono-Czarne</a><br>
+					<a href="https://eduinf.waw.pl/inf/alg/001_search/0121a.php">Kompresja Huffmana</a><br>
+		<a href="https://eduinf.waw.pl/inf/alg/001_search/0121b.php">Zbiory rozłączne &#8211; implementacja za pomocą drzew</a><hr size="1" color="#336699"><a href="https://eduinf.waw.pl/inf/alg/001_search/0029.php">Podstawowe operacje na tablicach</a><br>
+		<a href="https://eduinf.waw.pl/inf/alg/001_search/0100.php">Podstawowe pojęcia dotyczące stosów</a></td>
+		<td valign="top">&nbsp;</td>
+		<td valign="top"><a href="#P1">Algorytm DFS</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#P2">pre-order</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#P3">in-order</a><br>
+&nbsp;&nbsp;&nbsp; <a href="#P4">post-order</a></td>
+	</tr>
+</tbody></table>
+<div class="bl2">
+  <p class="mlink">&nbsp;</p></div>
+<div class="bl1">
+<h3>Problem</h3>
+<p class="bl2">Dokonać przejścia w głąb przez wszystkie węzły drzewa binarnego.</p>
+<p class="bl1"><br>
+<br>
+Drzewa odzwierciedlają różnego rodzaju struktury. W węzłach są przechowywane 
+różne informacje. Często będziemy spotykać się z zadaniem, które wymaga 
+odwiedzenia każdego węzła drzewa i przetworzenia informacji przechowywanych w 
+węźle. Zadanie to realizują <b>algorytmy przechodzenia drzewa</b>
+<span class="rem">(ang. tree traversal algorithm)</span>. Polegają one na 
+poruszaniu się po drzewie od węzła do węzła wzdłuż krawędzi w pewnym porządku i 
+przetwarzaniu danych przechowywanych w węzłach. Istnieje kilka takich 
+algorytmów o różnych własnościach. Omówimy je w tym rozdziale.</p>
+<p class="bl1">&nbsp;</p>
+<h2><a name="P1"></a>Algorytm DFS</h2>
+<div class="sb1">
+	<p><b>Odwiedzenie węzła</b> <span class="rem">(ang. node visit)</span> 
+	polega na dojściu do danego węzła po strukturze drzewa oraz przetworzenie 
+	danych zawartych w węźle. <b>Przeszukiwanie w głąb</b> <span class="rem">
+	(ang. Depth First Search - DFS)</span> jest bardzo popularnym algorytmem 
+	przechodzenia przez wszystkie węzły poddrzewa, którego korzeniem jest węzeł 
+	startowy <span class="rem">(jeśli węzłem startowym będzie korzeń drzewa, to 
+	DFS przejdzie przez wszystkie węzły zawarte w drzewie)</span>. Zasada 
+	działania tego algorytmu opiera się na rekurencji lub stosie, którym 
+	zastępujemy wywołania rekurencyjne. Ze względu na kolejność odwiedzin węzłów 
+	wyróżniamy trzy odmiany DFS <span class="rem">(istnieją jeszcze trzy dalsze 
+	będące "lustrzanymi odbiciami")</span>:</p>
+	<p>&nbsp;</p>
+	</div><div style="text-align: center; width: 100%; height: auto; clear: both;" class="google-auto-placed"><ins style="display: block; margin: 6px auto 10px; background-color: transparent; height: 113px;" data-ad-format="auto" class="adsbygoogle adsbygoogle-noablate" data-ad-client="ca-pub-2048408300128807" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display: inline-table; border: medium none; height: 113px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1200px; background-color: transparent;"><ins id="aswift_2_anchor" style="display: block; border: medium none; height: 113px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 1200px; background-color: transparent; overflow: hidden;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left: 0px; position: absolute; top: 0px; border: 0px none; width: 1200px; height: 113px;" width="1200" height="113" frameborder="0"></iframe></ins></ins></ins></div>
+<h3><a name="P2"></a>DFS: pre-order &#8211; przejście wzdłużne</h3>
+<div class="sb1">W <b>przejściu wzdłużnym</b> <span class="rem">(ang. pre-order 
+	traversal)</span> najpierw odwiedzamy korzeń poddrzewa, a następnie 
+	przechodzimy kolejno lewe i prawe poddrzewo. Prześledź poniższy przykład:<p>&nbsp;</p>
+	<div align="center">
+		<table id="table252" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#C0C0C0" border="1">
+			<tbody><tr>
+				<td bgcolor="#F0F0F0">Stan przejścia</td>
+				<td nowrap="nowrap" bgcolor="#F0F0F0">Przetworzone węzły</td>
+				<td bgcolor="#F0F0F0">Opis</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_01.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A</td>
+				<td>Odwiedzamy korzeń A i przechodzimy do lewego syna B, który 
+				jest korzeniem lewego poddrzewa dla węzła A.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_02.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B</td>
+				<td>Odwiedzamy korzeń B poddrzewa i przechodzimy do lewego syna 
+				D, który jest korzeniem poddrzewa dla węzła B.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_03.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D</td>
+				<td>Odwiedzamy D i przechodzimy do H.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_04.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H</td>
+				<td>Odwiedzamy H. Węzeł nie ma dzieci, zatem lewe poddrzewo dla 
+				węzła D (ojca H) zostało przebyte. Wracamy do węzła D i 
+				przechodzimy do I, który jest korzeniem prawego poddrzewa dla 
+				węzła D.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_05.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I</td>
+				<td>Odwiedzamy I. Węzeł jest liściem, zatem prawe drzewo węzła D 
+				zostało przebyte. Jednocześnie zostało przebyte całe lewe 
+				poddrzewo węzła B. Wracamy do B i przechodzimy do E, które jest 
+				korzeniem prawego poddrzewa węzła B.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_06.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E</td>
+				<td>Odwiedzamy węzeł E i przechodzimy do lewego poddrzewa, czyli 
+				do węzła J.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_07.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E J</td>
+				<td>Wracamy do korzenia A, ponieważ całe lewe poddrzewo zostało 
+				przebyte. Teraz w analogiczny sposób odwiedzamy prawe poddrzewo, 
+				rozpoczynając od jego korzenia C.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_08.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E J C</td>
+				<td>Odwiedzamy C i przechodzimy do lewego poddrzewa.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_09.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E J C F</td>
+				<td>Odwiedzamy F i przechodzimy do lewego poddrzewa.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_10.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E J C F K</td>
+				<td>Odwiedzamy K i wracamy do C (lewe poddrzewo węzła C jest 
+				przebyte), a następnie przechodzimy do prawego poddrzewa.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">A B D H I E J C F K G</td>
+				<td>Odwiedzamy G. Drzewo zostało przebyte.</td>
+			</tr>
+		</tbody></table>
+	</div>
+	<p>Na poniższym rysunku zaznaczyliśmy linię przejścia przez kolejne węzły 
+	drzewa.</p>
+	<div align="center">
+		<table id="table272" style="border-collapse: collapse" cellpadding="4" border="0">
+			<tbody><tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td>&#8594; pre-order &#8594;</td>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_12.gif" width="213" height="151" border="0"></td>
+			</tr>
+		</tbody></table>
+		<p>&nbsp;</p></div>
+<h4><a name="A1"></a>Algorytm rekurencyjny DFS:preorder dla drzewa 
+binarnego</h4>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table257" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table260" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Jeśli</b> <i>v</i> = nil, <b>to zakończ</b></td>
+      <td class="c" valign="top">; koniec rekurencji</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap">Odwiedź węzeł wskazany przez <i>v</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap">preorder(<i>v</i>&#8594;<i>left</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez lewe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap">preorder(<i>v</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez prawe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  </div>
+<p class="bl1">&nbsp;</p>
+<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table261" cellpadding="8" border="0">
+    <tbody><tr>
+      <td class="note"><b>Ważne</b>:<br>
+ <p class="bl1">Zanim uruchomisz program, przeczytaj <a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td></tr>
+  </tbody></table>
+  <p>&nbsp;</p></div>
+<div class="sb1">
+	Program tworzy strukturę drzewa binarnego jak w przykładzie powyżej. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu preorder, wypisując odwiedzane kolejno węzły.<p>&nbsp;</p>
+	<table id="table262" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+		<tbody><tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="pas"><pre><span class="c">// Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_preorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+
+<span class="c">// Rekurencyjna procedura preorder</span>
+
+<span class="i">procedure</span> <span class="v">preorder</span>(<span class="v">v</span> : <span class="v">PBTNode</span>);
+<span class="i">begin</span>
+  <span class="i">if</span> <span class="v">v</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+  <span class="i">begin</span>
+    <span class="v">write</span>(<span class="v">v</span>^.<span class="v">data</span>,<span class="t">' '</span>); <span class="c">// odwiedzamy węzeł</span>
+    <span class="v">preorder</span>(<span class="v">v</span>^.<span class="v">left</span>);  <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">preorder</span>(<span class="v">v</span>^.<span class="v">right</span>); <span class="c">// przechodzimy prawe poddrzewo</span>
+  <span class="i">end</span>;
+<span class="i">end</span>;
+
+<span class="i">begin</span>
+  <span class="v">preorder</span>(@<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="cpp"><pre><span class="c">// Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="c">// Rekurencyjna funkcja preorder</span>
+
+<span class="i">void</span> <span class="v">preorder</span>(<span class="v">BTNode</span> * <span class="v">v</span>)
+{
+  <span class="i">if</span>(<span class="v">v</span>)
+  {
+    <span class="v">cout</span> &lt;&lt; <span class="v">v</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>; <span class="c">// odwiedzamy węzeł</span>
+    <span class="v">preorder</span>(<span class="v">v</span>-&gt;<span class="v">left</span>);      <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">preorder</span>(<span class="v">v</span>-&gt;<span class="v">right</span>);     <span class="c">// przechodzimy prawe poddrzewo</span>
+  }
+}
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">preorder</span>(&amp;<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="bas"><pre><span class="c">' Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">' Data: 17.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> = (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="c">' Rekurencyjna procedura preorder</span>
+
+<span class="i">Sub</span> <span class="v">preorder</span>(<span class="i">Byval</span> <span class="v">v</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>)
+  <span class="i">If</span> <span class="v">v</span> <span class="i">Then</span>
+    <span class="i">Print</span> <span class="v">v</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>;  <span class="c">' odwiedzamy węzeł</span>
+    <span class="v">preorder</span>(<span class="v">v</span>-&gt;<span class="i">Left</span>)   <span class="c">' przechodzimy lewe poddrzewo</span>
+    <span class="v">preorder</span>(<span class="v">v</span>-&gt;<span class="i">Right</span>)  <span class="c">' przechodzimy prawe poddrzewo</span>
+  <span class="i">End</span> <span class="i">If</span>
+<span class="i">End</span> <span class="i">Sub</span>
+
+<span class="v">preorder</span>(@<span class="v">A</span>)  <span class="c">' przejście rozpoczynamy od korzenia</span>
+<span class="i">Print</span>
+<span class="i">End</span> </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left" class="program">A B D H I E J C F K G</td>
+		</tr>
+	</tbody></table>
+	<p>&nbsp;</p></div>
+<h4><a name="A2"></a>Algorytm stosowy DFS:preorder dla drzewa binarnego</h4>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table295" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5>Elementy pomocnicze:</h5>
+<table id="table296" style="BORDER-COLLAPSE: collapse" class="bl1" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>S</i></td>
+    <td valign="top">&nbsp;&#8211;<span lang="en">&nbsp;</span></td>
+    <td>stos wskazań węzłów, rozmiar stosu nie przekracza podwójnej wysokości 
+	drzewa.</td>
+  </tr>
+  </tbody></table>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table297" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Utwórz</b> pusty stos <i>S</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap"><i>S</i>.push(<i>v</i>)</td>
+      <td class="c" valign="top">; zapamiętujemy wskazanie węzła startowego na 
+		stosie</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap"><b>Dopóki</b> <i>S</i>.empty() = false, <b>wykonuj</b> 
+		K04...K08</td>
+      <td class="c" valign="top">; w pętli przetwarzamy kolejne węzły</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>v</i> &#8592; <i>S</i>.top()</td>
+      <td class="c" valign="top">; pobieramy ze stosu wskazanie węzła</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>S</i>.pop()</td>
+      <td class="c" valign="top">; pobrane wskazanie usuwamy ze stosu</td>
+    </tr>
+    <tr>
+      <td valign="top">K06:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; Odwiedź węzeł wskazany przez <i>
+		v</i></td>
+      <td class="c" valign="top">; przetwarzamy węzeł</td>
+    </tr>
+    <tr>
+      <td valign="top">K07:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> (<i>v</i>&#8594;<i>right</i>) &#8800; 
+		nil, <b>to </b><i>S</i>.push(<i>v</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; umieszczamy na stosie wskazanie prawego syna, 
+		jeśli istnieje</td>
+    </tr>
+    <tr>
+      <td valign="top">K08:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> (<i>v</i>&#8594;<i>left</i>) &#8800; 
+		nil, <b>to </b><i>S</i>.push(<i>v</i>&#8594;<i>left</i>)</td>
+      <td class="c" valign="top">; umieszczamy na stosie lewego syna, jeśli 
+		istnieje i kontynuujemy pętlę aż do wyczerpania stosu</td>
+    </tr>
+    <tr>
+      <td valign="top">K09:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  </div>
+<p class="bl1">&nbsp;</p>
+<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table298" cellpadding="8" border="0">
+    <tbody><tr>
+      <td class="note"><b>Ważne</b>:<br>
+ <p class="bl1">Zanim uruchomisz program, przeczytaj <a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td></tr>
+  </tbody></table>
+  <p>&nbsp;</p></div>
+<div class="sb1">
+	Program tworzy strukturę drzewa binarnego. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu preorder, wypisując odwiedzane kolejno węzły. Przy 
+	przechodzeniu drzewa korzysta z prostego stosu.<p>&nbsp;</p>
+	<table id="table299" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+		<tbody><tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="pas2"><pre><span class="c">// Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_preorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+  <span class="v">S</span>    : <span class="i">array</span>[<span class="n">0</span>..<span class="n">6</span>] <span class="i">of</span> <span class="v">PBTNode</span>; <span class="c">// stos</span>
+  <span class="v">sptr</span> : <span class="v">Integer</span>;                   <span class="c">// wskaźnik stosu</span>
+  <span class="v">v</span>    : <span class="v">PBTNode</span>;
+
+<span class="i">begin</span>
+
+  <span class="v">S</span>[<span class="n">0</span>] := @<span class="v">A</span>;           <span class="c">// na stosie umieszczamy adres korzenia</span>
+  <span class="v">sptr</span> := <span class="n">1</span>;            <span class="c">// stos zawiera 1 element</span>
+
+  <span class="i">while</span> <span class="v">sptr</span> &gt; <span class="n">0</span> <span class="i">do</span>
+  <span class="i">begin</span>
+    <span class="v">dec</span>(<span class="v">sptr</span>);
+    <span class="v">v</span> := <span class="v">S</span>[<span class="v">sptr</span>];       <span class="c">// pobieramy ze stosu wskazanie węzła</span>
+
+    <span class="v">write</span>(<span class="v">v</span>^.<span class="v">data</span>,<span class="t">' '</span>); <span class="c">// przetwarzamy węzeł</span>
+
+    <span class="c">// Na stosie umieszczamy wskazania dzieci, jeśli istnieją</span>
+
+    <span class="i">if</span> <span class="v">v</span>^.<span class="v">right</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+    <span class="i">begin</span>
+      <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">v</span>^.<span class="v">right</span>;
+      <span class="v">inc</span>(<span class="v">sptr</span>);
+    <span class="i">end</span>;
+
+    <span class="i">if</span> <span class="v">v</span>^.<span class="v">left</span>  &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+    <span class="i">begin</span>
+      <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">v</span>^.<span class="v">left</span>;
+      <span class="v">inc</span>(<span class="v">sptr</span>);
+    <span class="i">end</span>;
+
+  <span class="i">end</span>;
+
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="cpp2"><pre><span class="c">// Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">BTNode</span> * <span class="v">v</span>, * <span class="v">S</span>[<span class="n">7</span>];     <span class="c">// stos</span>
+  <span class="i">int</span> <span class="v">sptr</span>;                  <span class="c">// wskaźnik stosu</span>
+
+  <span class="v">S</span>[<span class="n">0</span>] = &amp;<span class="v">A</span>;                 <span class="c">// na stosie umieszczamy wskazanie korzenia</span>
+  <span class="v">sptr</span> = <span class="n">1</span>;                  <span class="c">// stos zawiera 1 element</span>
+
+  <span class="i">while</span>(<span class="v">sptr</span>)
+  {
+    <span class="v">v</span> = <span class="v">S</span>[--<span class="v">sptr</span>];           <span class="c">// pobieramy ze stosu wskazanie węzła</span>
+
+    <span class="v">cout</span> &lt;&lt; <span class="v">v</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>;  <span class="c">// przetwarzamy węzeł</span>
+
+    <span class="c">// na stosie umieszczamy wskazania dzieci, jeśli istnieją</span>
+
+    <span class="i">if</span>(<span class="v">v</span>-&gt;<span class="v">right</span>) <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">v</span>-&gt;<span class="v">right</span>;
+
+    <span class="i">if</span>(<span class="v">v</span>-&gt;<span class="v">left</span>)  <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">v</span>-&gt;<span class="v">left</span>;
+  }
+
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="bas"><pre><span class="c">' Przechodzenie drzew binarnych DFS:preorder</span>
+<span class="c">' Data: 17.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="i">Dim</span> <span class="v">S</span>(<span class="n">6</span>) <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span> <span class="c">' stos</span>
+<span class="i">Dim</span> <span class="v">sptr</span> <span class="i">As</span> <span class="i">Integer</span>       <span class="c">' wskaźnik stosu</span>
+<span class="i">Dim</span> <span class="v">v</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>    <span class="c">' wskaźnik węzła</span>
+  
+<span class="v">S</span>(<span class="n">0</span>) = @<span class="v">A</span>                 <span class="c">' na stosie umieszczamy wskazanie korzenia</span>
+<span class="v">sptr</span> = <span class="n">1</span>                  <span class="c">' stos zawiera 1 element</span>
+
+<span class="i">While</span> <span class="v">sptr</span> &gt; <span class="n">0</span>
+  <span class="v">sptr</span> -= <span class="n">1</span>
+  <span class="v">v</span> = <span class="v">S</span>(<span class="v">sptr</span>)             <span class="c">' pobieramy ze stosu wskazanie węzła</span>
+
+  <span class="i">Print</span> <span class="v">v</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>;      <span class="c">' przetwarzamy węzeł</span>
+
+  <span class="c">' na stosie umieszczamy wskazania dzieci, jeśli istnieją</span>
+
+  <span class="i">If</span> <span class="v">v</span>-&gt;<span class="i">Right</span> <span class="i">Then</span>
+    <span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">v</span>-&gt;<span class="i">Right</span>
+    <span class="v">sptr</span> += <span class="n">1</span>
+  <span class="i">End</span> <span class="i">If</span>
+
+  <span class="i">If</span> <span class="v">v</span>-&gt;<span class="i">Left</span> <span class="i">Then</span>
+    <span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">v</span>-&gt;<span class="i">Left</span>
+    <span class="v">sptr</span> += <span class="n">1</span>
+  <span class="i">End</span> <span class="i">If</span>
+
+<span class="i">Wend</span>
+<span class="i">Print</span>
+<span class="i">End</span> </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left" class="program">A B D H I E J C F K G</td>
+		</tr>
+	</tbody></table>
+	</div>
+	<p>&nbsp;</p></div>
+<h3><a name="P3"></a>DFS: in-order &#8211; przejście poprzeczne</h3>
+<div class="sb1">W <b>przejściu poprzecznym</b> <span class="rem">(ang. in-order traversal)</span> 
+	najpierw przechodzimy lewe poddrzewo danego węzła, następnie odwiedzamy 
+	węzeł i na koniec przechodzimy prawe poddrzewo.<p>&nbsp;</p>
+		<table id="table273" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#C0C0C0" border="1">
+			<tbody><tr>
+				<td bgcolor="#F0F0F0">Stan przejścia</td>
+				<td nowrap="nowrap" bgcolor="#F0F0F0">Przetworzone węzły</td>
+				<td bgcolor="#F0F0F0">Opis</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_13.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H</td>
+				<td>Rozpoczynamy w korzeniu A. Jednakże węzła A nie 
+				przetwarzamy, lecz przechodzimy do lewego syna B. Tutaj dalej 
+				przechodzimy do D i H. Węzeł H nie ma dzieci, więc przechodzenie 
+				do lewego poddrzewa się kończy i węzeł H zostaje przetworzony 
+				jako pierwszy.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_14.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D</td>
+				<td>Lewe poddrzewo węzła D zostało przebyte, zatem przetwarzamy 
+				węzeł D i przechodzimy do prawego poddrzewa, którego korzeniem 
+				jest węzeł I.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_15.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I</td>
+				<td>Węzeł I jest liściem, zatem nie posiada lewego poddrzewa. 
+				Przetwarzamy węzeł I.&nbsp; </td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_16.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B</td>
+				<td>Lewe poddrzewo węzła B zostało przebyte. Przetwarzamy węzeł 
+				B i przechodzimy do jego prawego poddrzewa rozpoczynającego się 
+				w węźle E.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_17.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J</td>
+				<td>Będąc w węźle E najpierw przechodzimy jego lewe poddrzewo, 
+				czyli idziemy do węzła J. Węzeł J jest liściem i nie posiada 
+				dalszych poddrzew. Przetwarzamy J i wracamy do E.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_18.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E</td>
+				<td>Lewe poddrzewo węzła E zostało przebyte. Przetwarzamy węzeł 
+				E. Ponieważ nie posiada on prawego poddrzewa, wracamy do A.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_07.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E A</td>
+				<td>Lewe poddrzewo węzła A zostało przebyte. Przetwarzamy A i 
+				przechodzimy do prawego poddrzewa rozpoczynającego się od węzła 
+				C.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_19.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E A K</td>
+				<td>Będąc w węźle C przechodzimy do lewego poddrzewa 
+				rozpoczynającego się od węzła F, a tam dalej przechodzimy do 
+				następnego lewego poddrzewa, czyli do węzła K. Ten węzeł jest 
+				liściem i nie posiada dalszych poddrzew. Przetwarzamy K i 
+				wracamy do F.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_20.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E A K F</td>
+				<td>Lewe poddrzewo węzła F zostało przebyte. Przetwarzamy F. 
+				Ponieważ brak prawego poddrzewa, wracamy do C.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_21.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E A K F C</td>
+				<td>Lewe poddrzewo węzła C zostało przebyte, przetwarzamy C i 
+				przechodzimy do prawego poddrzewa, czyli do węzła G.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H D I B J E A K F C G</td>
+				<td>G jest liściem, przetwarzamy G i kończymy.</td>
+			</tr>
+			</tbody></table>
+	</div>
+<p>&nbsp;</p>
+	<div align="center">
+		<table id="table274" style="border-collapse: collapse" cellpadding="4" border="0">
+			<tbody><tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td>&#8594; in-order &#8594;</td>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_22.gif" width="213" height="151" border="0"></td>
+			</tr>
+		</tbody></table>
+		<p>&nbsp;</p></div>
+<div class="sb1">
+<h4><a name="A3"></a>Algorytm rekurencyjny DFS:inorder dla drzewa 
+binarnego</h4>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table279" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table280" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Jeśli</b> <i>v</i> = nil, <b>to zakończ</b></td>
+      <td class="c" valign="top">; koniec rekurencji</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap">inorder(<i>v</i>&#8594;<i>left</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez lewe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap">Odwiedź węzeł wskazany przez <i>v</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap">inorder(<i>v</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez prawe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  </div>
+<p class="bl1">&nbsp;</p>
+<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table281" cellpadding="8" border="0">
+    <tbody><tr>
+      <td class="note"><b>Ważne</b>:<br>
+ <p class="bl1">Zanim uruchomisz program, przeczytaj <a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td></tr>
+  </tbody></table>
+  <p>&nbsp;</p></div>
+<div class="sb1">
+	Program tworzy strukturę drzewa binarnego jak w przykładzie powyżej. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu inorder, wypisując odwiedzane kolejno węzły.<p>&nbsp;</p>
+	<table id="table282" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+		<tbody><tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="pas0"><pre><span class="c">// Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_inorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+
+<span class="c">// Rekurencyjna procedura inorder</span>
+
+<span class="i">procedure</span> <span class="v">inorder</span>(<span class="v">v</span> : <span class="v">PBTNode</span>);
+<span class="i">begin</span>
+  <span class="i">if</span> <span class="v">v</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+  <span class="i">begin</span>
+    <span class="v">inorder</span>(<span class="v">v</span>^.<span class="v">left</span>);   <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">write</span>(<span class="v">v</span>^.<span class="v">data</span>,<span class="t">' '</span>); <span class="c">// odwiedzamy węzeł</span>
+    <span class="v">inorder</span>(<span class="v">v</span>^.<span class="v">right</span>);  <span class="c">// przechodzimy prawe poddrzewo</span>
+  <span class="i">end</span>;
+<span class="i">end</span>;
+
+<span class="i">begin</span>
+  <span class="v">inorder</span>(@<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="cpp0"><pre><span class="c">// Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">// Data: 17.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="c">// Rekurencyjna funkcja inorder</span>
+
+<span class="i">void</span> <span class="v">inorder</span>(<span class="v">BTNode</span> * <span class="v">v</span>)
+{
+  <span class="i">if</span>(<span class="v">v</span>)
+  {
+    <span class="v">inorder</span>(<span class="v">v</span>-&gt;<span class="v">left</span>);       <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">cout</span> &lt;&lt; <span class="v">v</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>; <span class="c">// odwiedzamy węzeł</span>
+    <span class="v">inorder</span>(<span class="v">v</span>-&gt;<span class="v">right</span>);      <span class="c">// przechodzimy prawe poddrzewo</span>
+  }
+}
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">inorder</span>(&amp;<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="bas0"><pre><span class="c">' Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">' Data: 17.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="c">' Rekurencyjna procedura inorder</span>
+
+<span class="i">Sub</span> <span class="v">inorder</span>(<span class="i">Byval</span> <span class="v">v</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>)
+  <span class="i">If</span> <span class="v">v</span> <span class="i">Then</span>
+    <span class="v">inorder</span>(<span class="v">v</span>-&gt;<span class="i">Left</span>)   <span class="c">' przechodzimy lewe poddrzewo</span>
+    <span class="i">Print</span> <span class="v">v</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>; <span class="c">' odwiedzamy węzeł</span>
+    <span class="v">inorder</span>(<span class="v">v</span>-&gt;<span class="i">Right</span>)  <span class="c">' przechodzimy prawe poddrzewo</span>
+  <span class="i">End</span> <span class="i">If</span>
+<span class="i">End</span> <span class="i">Sub</span>
+
+<span class="v">inorder</span>(@<span class="v">A</span>)  <span class="c">' przejście rozpoczynamy od korzenia</span>
+<span class="i">Print</span>
+<span class="i">End</span> </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left" class="program">H D I B J E A K F C G</td>
+		</tr>
+	</tbody></table>
+	<p>&nbsp;</p></div>
+<h4><a name="A4"></a>Algorytm stosowy DFS:inorder dla drzewa binarnego</h4><div class="sb1">
+	Algorytm wykorzystuje stos oraz dodatkowy wskaźnik cp, którym przemieszczamy 
+	się po drzewie.</div>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table286" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5>Elementy pomocnicze:</h5>
+<table id="table287" style="BORDER-COLLAPSE: collapse" class="bl1" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>S</i></td>
+    <td valign="top">&nbsp;&#8211;<span lang="en">&nbsp;</span></td>
+    <td>stos wskazań węzłów, rozmiar stosu nie przekracza podwójnej wysokości 
+	drzewa.</td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap="nowrap"><i>cp</i></td>
+    <td valign="top">&nbsp;&#8211;</td>
+    <td>wskaźnik bieżącego węzła</td>
+  </tr>
+  </tbody></table>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table288" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Utwórz</b> pusty stos <i>S</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap"><i>cp</i> &#8592; <i>v</i></td>
+      <td class="c" valign="top">; bieżącym węzłem jest korzeń drzewa</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap"><b>Dopóki</b> (<i>S</i>.empty() = false)
+		<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/000_symbol_13.gif" width="11" height="8" border="0"> 
+		(<i>cp</i> &#8800; nil) <b>wykonuj</b> K04...K11</td>
+      <td class="c" valign="top">; pętla jest wykonywana, jeśli jest coś na 
+		stosie lub cp wskazuje węzeł drzewa</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> <i>cp</i> = nil, <b>
+		to idź do</b> K07</td>
+      <td class="c" valign="top">; sprawdzamy, czy wyszliśmy poza liść drzewa</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>S</i>.push(<i>cp</i>)</td>
+      <td class="c" valign="top">; jeśli nie, to umieszczamy wskazanie bieżącego 
+		węzła na stosie</td>
+    </tr>
+    <tr>
+      <td valign="top">K06:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>cp</i> &#8592; (<i>cp</i>&#8594;<i>left</i>)</td>
+      <td class="c" valign="top">; bieżącym węzłem staje się lewy syn</td>
+    </tr>
+    <tr>
+      <td valign="top">K07:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Następny obieg pętli</b> K02</td>
+      <td class="c" valign="top">; wracamy na początek pętli</td>
+    </tr>
+    <tr>
+      <td valign="top">K08:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>cp</i> &#8592; <i>S</i>.top()</td>
+      <td class="c" valign="top">; wyszliśmy poza liść, wracamy do węzła, 
+		pobierające jego wskazanie ze stosu</td>
+    </tr>
+    <tr>
+      <td valign="top">K09:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>S</i>.pop()</td>
+      <td class="c" valign="top">; wskazanie usuwamy ze stosu</td>
+    </tr>
+    <tr>
+      <td valign="top">K10:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; Odwiedź węzeł wskazany przez <i>
+		cp</i></td>
+      <td class="c" valign="top">; przetwarzamy dane w węźle</td>
+    </tr>
+    <tr>
+      <td valign="top">K11:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>cp</i> &#8592; (<i>cp</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; bieżącym węzłem staje się prawy syn</td>
+    </tr>
+    <tr>
+      <td valign="top">K12:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  <p>&nbsp;</p></div>
+	<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table293" cellpadding="8" border="0">
+			<tbody><tr>
+				<td class="note"><b>Ważne</b>:<br>
+				<p class="bl1">Zanim uruchomisz program, przeczytaj 
+				<a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td>
+			</tr>
+		</tbody></table>
+		<p>&nbsp;</p></div>
+	<div class="sb1">Program tworzy strukturę drzewa binarnego. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu inorder, wypisując odwiedzane kolejno węzły. Przy 
+	przechodzeniu drzewa korzysta z prostego stosu.<p>&nbsp;</p>
+		<table id="table294" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+			<tbody><tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="pas1"><pre><span class="c">// Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">// Data: 18.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_preorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+  <span class="v">S</span>    : <span class="i">array</span>[<span class="n">0</span>..<span class="n">6</span>] <span class="i">of</span> <span class="v">PBTNode</span>; <span class="c">// stos</span>
+  <span class="v">sptr</span> : <span class="v">Integer</span>;                   <span class="c">// wskaźnik stosu</span>
+  <span class="v">cp</span>   : <span class="v">PBTNode</span>;                <span class="c">// wskaźnik bieżącego węzła</span>
+
+<span class="i">begin</span>
+
+  <span class="v">sptr</span> := <span class="n">0</span>;            <span class="c">// pusty stos</span>
+
+  <span class="v">cp</span> := @<span class="v">A</span>;             <span class="c">// cp ustawiamy na korzeń drzewa</span>
+
+  <span class="i">while</span> (<span class="v">sptr</span> &gt; <span class="n">0</span>) <span class="i">or</span> (<span class="v">cp</span> &lt;&gt; <span class="v">nil</span>) <span class="i">do</span>
+    <span class="i">if</span> <span class="v">cp</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+    <span class="i">begin</span>
+      <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">cp</span>;    <span class="c">// umieszczamy cp na stosie</span>
+      <span class="v">inc</span>(<span class="v">sptr</span>);
+      <span class="v">cp</span> := <span class="v">cp</span>^.<span class="v">left</span>;   <span class="c">// cp staje się lewym synem</span>
+    <span class="i">end</span>
+    <span class="i">else</span>
+    <span class="i">begin</span>
+      <span class="v">dec</span>(<span class="v">sptr</span>);
+      <span class="v">cp</span> := <span class="v">S</span>[<span class="v">sptr</span>];    <span class="c">// pobieramy wskazanie ze stosu</span>
+      <span class="v">write</span>(<span class="v">cp</span>^.<span class="v">data</span>,<span class="t">' '</span>);
+      <span class="v">cp</span> := <span class="v">cp</span>^.<span class="v">right</span>;  <span class="c">// cp staje się prawym synem</span>
+    <span class="i">end</span>;
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="cpp1"><pre><span class="c">// Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">// Data: 18.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">BTNode</span> * <span class="v">cp</span>, * <span class="v">S</span>[<span class="n">7</span>];    <span class="c">// stos</span>
+  <span class="i">int</span> <span class="v">sptr</span> = <span class="n">0</span>;              <span class="c">// wskaźnik stosu</span>
+
+  <span class="v">cp</span> = &amp;<span class="v">A</span>;                   <span class="c">// cp ustawiamy na korzeń drzewa</span>
+
+  <span class="i">while</span>(<span class="v">sptr</span> || <span class="v">cp</span>)
+    <span class="i">if</span>(<span class="v">cp</span>)
+    {
+      <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">cp</span>;        <span class="c">// umieszczamy cp na stosie</span>
+      <span class="v">cp</span> = <span class="v">cp</span>-&gt;<span class="v">left</span>;         <span class="c">// cp staje się lewym synem</span>
+    }
+    <span class="i">else</span>
+    {
+      <span class="v">cp</span> = <span class="v">S</span>[--<span class="v">sptr</span>];        <span class="c">// pobieramy wskazanie ze stosu</span>
+      <span class="v">cout</span> &lt;&lt; <span class="v">cp</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>;
+      <span class="v">cp</span> = <span class="v">cp</span>-&gt;<span class="v">right</span>;        <span class="c">// cp staje się prawym synem</span>
+    }
+
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="bas"><pre><span class="c">' Przechodzenie drzew binarnych DFS:inorder</span>
+<span class="c">' Data: 18.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="i">Dim</span> <span class="v">S</span>(<span class="n">6</span>) <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span> <span class="c">' stos</span>
+<span class="i">Dim</span> <span class="v">sptr</span> <span class="i">As</span> <span class="i">Integer</span>       <span class="c">' wskaźnik stosu</span>
+<span class="i">Dim</span> <span class="v">cp</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>   <span class="c">' wskaźnik bieżącego węzła</span>
+  
+<span class="v">sptr</span> = <span class="n">0</span>            <span class="c">' pusty stos</span>
+
+<span class="v">cp</span> = @<span class="v">A</span>             <span class="c">' cp ustawiamy na korzeń drzewa</span>
+
+<span class="i">While</span> (<span class="v">sptr</span> &gt; <span class="n">0</span>) <span class="i">Or</span> (<span class="v">cp</span> &lt;&gt; <span class="n">0</span>)
+  <span class="i">If</span> <span class="v">cp</span> <span class="i">Then</span>
+    <span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">cp</span>    <span class="c">' umieszczamy cp na stosie</span>
+    <span class="v">sptr</span> += <span class="n">1</span>
+    <span class="v">cp</span> = <span class="v">cp</span>-&gt;<span class="i">Left</span>   <span class="c">' cp staje się lewym synem</span>
+  <span class="i">Else</span>
+    <span class="v">sptr</span> -= <span class="n">1</span>
+    <span class="v">cp</span> = <span class="v">S</span>(<span class="v">sptr</span>)    <span class="c">' pobieramy wskazanie ze stosu</span>
+    <span class="i">Print</span> <span class="v">cp</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>;
+    <span class="v">cp</span> = <span class="v">cp</span>-&gt;<span class="i">Right</span>  <span class="c">' cp staje się prawym synem</span>
+  <span class="i">End</span> <span class="i">If</span>
+<span class="i">Wend</span>
+
+<span class="i">Print</span>
+
+<span class="i">End</span> </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left" class="program">H D I B J E A K 
+					F C G</td>
+			</tr>
+		</tbody></table></div></div>
+<div class="container">
+&nbsp;</div>
+<h3><a name="P4"></a>DFS: post-order &#8211; przejście wsteczne</h3>
+<div class="sb1">W <b>przejściu wstecznym</b> <span class="rem">(ang. post-order 
+	traversal)</span> najpierw przechodzimy lewe poddrzewo, następnie prawe, a 
+	dopiero na końcu przetwarzamy węzeł.<p>&nbsp;</p>
+		<table id="table300" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#C0C0C0" border="1">
+			<tbody><tr>
+				<td bgcolor="#F0F0F0">Stan przejścia</td>
+				<td nowrap="nowrap" bgcolor="#F0F0F0">Przetworzone węzły</td>
+				<td bgcolor="#F0F0F0">Opis</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_13.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H</td>
+				<td>Rozpoczynamy w korzeniu A. Najpierw przechodzimy lewe 
+				poddrzewo. Idziemy do B. Tutaj również przechodzimy lewe 
+				poddrzewo i idziemy do D, a następnie do H. Węzeł H jest liściem 
+				i nie posiada poddrzew. Przetwarzamy H i wracamy do D.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_23.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I</td>
+				<td>Lewe poddrzewo węzła D jest przebyte, przechodzimy poddrzewo 
+				prawe. Idziemy do węzła I. Ponieważ jest on liściem, to nie 
+				posiada poddrzew. Przetwarzamy I. Wracamy do D.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_15.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D</td>
+				<td>Oba poddrzewa węzła D zostały przebyte, przetwarzamy D i 
+				wracamy do B.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_24.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J</td>
+				<td>Dla węzła B przebyte zostało poddrzewo lewe. Teraz 
+				przechodzimy przez jego prawe poddrzewo. Idziemy do E i do J
+				<span class="rem">(lewe poddrzewo E)</span>. J jest liściem i 
+				nie posiada dalszych poddrzew, zatem przetwarzamy J i wracamy do 
+				E.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_25.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E</td>
+				<td>Lewe poddrzewo węzła E zostało przebyte. Nie ma prawego 
+				poddrzewa dla E, zatem przetwarzamy E i wracamy do B.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_18.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B</td>
+				<td>Lewe i prawe poddrzewo węzła B jest przebyte. Przetwarzamy 
+				węzeł B i wracamy do A.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_26.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B K</td>
+				<td>Lewe poddrzewo węzła A zostało przebyte. Przechodzimy do 
+				prawego poddrzewa, czyli do węzła C, następnie do F
+				<span class="rem">(lewe poddrzewo C)</span> i do K
+				<span class="rem">(lewe poddrzewo F)</span>. K jest liściem i 
+				nie posiada poddrzew. Przetwarzamy K i wracamy do F.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_27.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B K F</td>
+				<td>Lewe poddrzewo węzła F jest przebyte, a prawego poddrzewa 
+				brak. Przetwarzamy F i wracamy do C.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_28.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B K F G</td>
+				<td>Lewe poddrzewo węzła C jest przebyte, przechodzimy do 
+				poddrzewa prawego, czyli do węzła G. Węzeł G jest liściem i nie 
+				posiada poddrzew. Przetwarzamy G i wracamy do C.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_29.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B K F G C</td>
+				<td>Oba poddrzewa węzła C zostały przebyte. Przetwarzamy C i 
+				wracamy do A.</td>
+			</tr>
+			<tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td nowrap="nowrap">H I D J E B K F G C A</td>
+				<td>Oba poddrzewa węzła A zostały przebyte. Przetwarzamy A i 
+				kończymy</td>
+			</tr>
+			</tbody></table>
+	<p>&nbsp;</p>
+	<div align="center">
+		<table id="table307" style="border-collapse: collapse" cellpadding="4" border="0">
+			<tbody><tr>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+				<td>&#8594; post-order &#8594;</td>
+				<td>
+				<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_30.gif" width="213" height="151" border="0"></td>
+			</tr>
+		</tbody></table>
+		<p>&nbsp;</p></div>
+	<p>&nbsp;</p>
+<h4><a name="A5"></a>Algorytm rekurencyjny DFS:postorder dla drzewa 
+binarnego</h4>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table310" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table311" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Jeśli</b> <i>v</i> = nil, <b>to zakończ</b></td>
+      <td class="c" valign="top">; koniec rekurencji</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap">postorder(<i>v</i>&#8594;<i>left</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez lewe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap">postorder(<i>v</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; przejdź rekurencyjnie przez prawe poddrzewo</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap">Odwiedź węzeł wskazany przez <i>v</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  </div>
+<p class="bl1">&nbsp;</p>
+<p class="bl1">&nbsp;</p>
+<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table305" cellpadding="8" border="0">
+    <tbody><tr>
+      <td class="note"><b>Ważne</b>:<br>
+ <p class="bl1">Zanim uruchomisz program, przeczytaj <a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td></tr>
+  </tbody></table>
+  <p>&nbsp;</p></div>
+<div class="sb1">
+	Program tworzy strukturę drzewa binarnego jak w przykładzie powyżej. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu postorder, wypisując odwiedzane kolejno węzły. 
+	<p>&nbsp;</p>
+	</div>
+	<table id="table306" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+		<tbody><tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="pas3"><pre><span class="c">// Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">// Data: 19.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_postorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+
+<span class="c">// Rekurencyjna procedura postorder</span>
+
+<span class="i">procedure</span> <span class="v">postorder</span>(<span class="v">v</span> : <span class="v">PBTNode</span>);
+<span class="i">begin</span>
+  <span class="i">if</span> <span class="v">v</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+  <span class="i">begin</span>
+    <span class="v">postorder</span>(<span class="v">v</span>^.<span class="v">left</span>);  <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">postorder</span>(<span class="v">v</span>^.<span class="v">right</span>); <span class="c">// przechodzimy prawe poddrzewo</span>
+    <span class="v">write</span>(<span class="v">v</span>^.<span class="v">data</span>,<span class="t">' '</span>);  <span class="c">// odwiedzamy węzeł</span>
+  <span class="i">end</span>;
+<span class="i">end</span>;
+
+<span class="i">begin</span>
+  <span class="v">postorder</span>(@<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="cpp3"><pre><span class="c">// Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">// Data: 19.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="c">// Rekurencyjna funkcja postorder</span>
+
+<span class="i">void</span> <span class="v">postorder</span>(<span class="v">BTNode</span> * <span class="v">v</span>)
+{
+  <span class="i">if</span>(<span class="v">v</span>)
+  {
+    <span class="v">postorder</span>(<span class="v">v</span>-&gt;<span class="v">left</span>);     <span class="c">// przechodzimy lewe poddrzewo</span>
+    <span class="v">postorder</span>(<span class="v">v</span>-&gt;<span class="v">right</span>);    <span class="c">// przechodzimy prawe poddrzewo</span>
+    <span class="v">cout</span> &lt;&lt; <span class="v">v</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>; <span class="c">// odwiedzamy węzeł</span>
+  }
+}
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">postorder</span>(&amp;<span class="v">A</span>);  <span class="c">// przejście rozpoczynamy od korzenia</span>
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left">
+			<pre id="bas1"><pre><span class="c">' Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">' Data: 19.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="c">' Rekurencyjna procedura postorder</span>
+
+<span class="i">Sub</span> <span class="v">postorder</span>(<span class="i">Byval</span> <span class="v">v</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>)
+  <span class="i">If</span> <span class="v">v</span> <span class="i">Then</span>
+    <span class="v">postorder</span>(<span class="v">v</span>-&gt;<span class="i">Left</span>)  <span class="c">' przechodzimy lewe poddrzewo</span>
+    <span class="v">postorder</span>(<span class="v">v</span>-&gt;<span class="i">Right</span>) <span class="c">' przechodzimy prawe poddrzewo</span>
+    <span class="i">Print</span> <span class="v">v</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>;  <span class="c">' odwiedzamy węzeł</span>
+  <span class="i">End</span> <span class="i">If</span>
+<span class="i">End</span> <span class="i">Sub</span>
+
+<span class="v">postorder</span>(@<span class="v">A</span>)  <span class="c">' przejście rozpoczynamy od korzenia</span>
+<span class="i">Print</span>
+<span class="i">End</span> </pre></pre></td>
+		</tr>
+		<tr>
+			<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+		</tr>
+		<tr>
+			<td style="text-align: left" class="program">H I D J E B K F G C A</td>
+		</tr>
+	</tbody></table>
+	<p>&nbsp;</p><h4><a name="A6"></a>Algorytm stosowy DFS:postorder dla drzewa binarnego</h4><div class="sb1">
+		Algorytm wykorzystuje stos oraz dwa wskaźniki: <i>pp</i> &#8211; 
+		wskazanie poprzedniego węzła i <i>cp</i> &#8211; wskazanie bieżącego 
+		węzła. Są one używane do określenia, czy oba poddrzewa danego węzła 
+		zostały przebyte. </div>
+	<p>&nbsp;</p>
+<h5>Wejście</h5>
+<div class="sb1">
+<table id="table317" style="BORDER-COLLAPSE: collapse" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>v</i></td>
+    <td valign="top"><span lang="en">&nbsp;</span>&#8211;<span lang="en">&nbsp;</span></td>
+    <td>wskazanie węzła startowego drzewa binarnego</td>
+  </tr>
+  </tbody></table>
+</div>
+<h5>Wyjście:</h5>
+<div class="sb1">
+przetworzenie wszystkich węzłów drzewa.</div>
+<h5>Elementy pomocnicze:</h5>
+<table id="table318" style="BORDER-COLLAPSE: collapse" class="bl1" cellpadding="2" border="0">
+  <tbody><tr>
+    <td valign="top" nowrap="nowrap"><i>S</i></td>
+    <td valign="top">&nbsp;&#8211;<span lang="en">&nbsp;</span></td>
+    <td>stos wskazań węzłów, rozmiar stosu nie przekracza podwójnej wysokości 
+	drzewa.</td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap="nowrap"><i>pp</i></td>
+    <td valign="top">&nbsp;&#8211;</td>
+    <td>wskaźnik węzła poprzedniego</td>
+  </tr>
+  <tr>
+    <td valign="top" nowrap="nowrap"><i>cp</i></td>
+    <td valign="top">&nbsp;&#8211;</td>
+    <td>wskaźnik węzła bieżącego.</td>
+  </tr>
+  </tbody></table>
+<h5><a href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#prezentacja">Lista kroków:</a></h5>
+<div class="bl1">
+  <table style="border-collapse: collapse" id="table319" cellpadding="2" border="0">
+    <tbody><tr>
+      <td valign="top">K01:</td>
+      <td valign="top" nowrap="nowrap"><b>Utwórz</b> pusty stos <i>S</i></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K02:</td>
+      <td valign="top" nowrap="nowrap"><i>S</i>.push(<i>v</i>)</td>
+      <td class="c" valign="top">; węzeł startowy umieszczamy na stosie</td>
+    </tr>
+    <tr>
+      <td valign="top">K03:</td>
+      <td valign="top" nowrap="nowrap"><i>pp</i> &#8592; nil</td>
+      <td class="c" valign="top">; zerujemy wskaźnik węzła poprzedniego</td>
+    </tr>
+    <tr>
+      <td valign="top">K04:</td>
+      <td valign="top" nowrap="nowrap"><b>Dopóki</b> <i>S</i>.empty() = false: <b>wykonuj</b> 
+		K05...K14</td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K05:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>cp</i> &#8592; <i>S</i>.top()</td>
+      <td class="c" valign="top">; ustawiamy cp na węzeł przechowywany na stosie</td>
+    </tr>
+    <tr>
+      <td valign="top">K06:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> (<i>pp</i> = nil)
+		<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/000_symbol_13.gif" width="11" height="8" border="0"> 
+		((<i>pp</i>&#8594;<i>left</i>) = <i>cp</i>)
+		<img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/000_symbol_13.gif" width="11" height="8" border="0"> 
+		((<i>pp</i>&#8594;<i>right</i>) = <i>cp</i>), <b>to idź do</b> K11</td>
+      <td class="c" valign="top">; sprawdzamy, czy idziemy w głąb drzewa</td>
+    </tr>
+    <tr>
+      <td valign="top">K07:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> (<i>cp</i>&#8594;<i>left</i>) 
+		= <i>pp</i>, <b>to idź do </b>K13</td>
+      <td class="c" valign="top">; sprawdzamy, czy wróciliśmy z lewego poddrzewa</td>
+    </tr>
+    <tr>
+      <td valign="top">K08:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; Odwiedź węzeł wskazany przez cp</td>
+      <td class="c" valign="top">; oba poddrzewa przebyte, przetwarzamy węzeł</td>
+    </tr>
+    <tr>
+      <td valign="top">K09:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>S</i>.pop()</td>
+      <td class="c" valign="top">; i usuwamy jego wskazanie ze stosu</td>
+    </tr>
+    <tr>
+      <td valign="top">K10:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Idź do</b> K14</td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K11:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b> (<i>cp</i>&#8594;<i>left</i>) 
+		&#8800; nil, <b>to </b><i>S</i>.push(<i>cp</i>&#8594;<i>left</i>)<i><br>
+		</i>&nbsp;&nbsp;&nbsp; <b>inaczej</b> <b>jeśli</b><i> </i>(<i>cp</i>&#8594;<i>right</i>) 
+		&#8800; nil<i>, </i><b>to </b><i>S</i>.push(<i>cp</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; jeśli istnieje lewy syn cp, umieszczamy go na 
+		stosie<br>
+		; inaczej umieszczamy na stosie prawego syna, jeśli istnieje</td>
+    </tr>
+    <tr>
+      <td valign="top">K12:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Idź do</b> K14</td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top">K13:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <b>Jeśli</b><i> </i>(<i>cp</i>&#8594;<i>right</i>) 
+		&#8800; nil<i>, </i><b>to </b><i>S</i>.push(<i>cp</i>&#8594;<i>right</i>)</td>
+      <td class="c" valign="top">; jeśli istnieje prawy syn, to umieszczamy go 
+		na stosie</td>
+    </tr>
+    <tr>
+      <td valign="top">K14:</td>
+      <td valign="top" nowrap="nowrap">&nbsp;&nbsp;&nbsp; <i>pp</i> &#8592; <i>cp</i></td>
+      <td class="c" valign="top">; zapamiętujemy cp w pp i wykonujemy kolejny 
+		obieg pętli</td>
+    </tr>
+    <tr>
+      <td valign="top">K15:</td>
+      <td valign="top" nowrap="nowrap"><b>Zakończ</b></td>
+      <td class="c" valign="top">&nbsp;</td>
+    </tr>
+    </tbody></table>
+  <p>&nbsp;</p></div>
+	<h4>Program</h4> <div class="sb1"><table style="border-collapse: collapse" id="table320" cellpadding="8" border="0">
+			<tbody><tr>
+				<td class="note"><b>Ważne</b>:<br>
+				<p class="bl1">Zanim uruchomisz program, przeczytaj 
+				<a target="_blank" href="https://eduinf.waw.pl/inf/alg/001_search/0001.php#konsola">wstęp</a> do tego artykułu, w którym wyjaśniamy 
+      funkcje tych programów oraz sposób korzystania z nich. </p></td>
+			</tr>
+		</tbody></table>
+		<p>&nbsp;</p></div>
+	<div class="sb1">Program tworzy strukturę drzewa binarnego. Danymi 
+	węzłów są znaki A. B. C, .... Po utworzeniu drzewa program przechodzi je za 
+	pomocą algorytmu postorder, wypisując odwiedzane kolejno węzły. Przy 
+	przechodzeniu drzewa korzysta z prostego stosu.<p>&nbsp;</p>
+		<table id="table321" style="border-collapse: collapse" cellspacing="0" cellpadding="4" bordercolor="#808080" border="1">
+			<tbody><tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Lazarus</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="pas"><pre><span class="c">// Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">// Data: 19.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="i">program</span> <span class="v">DFS_postorder</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">type</span>
+  <span class="v">PBTNode</span> = ^<span class="v">BTNode</span>;
+  <span class="v">BTNode</span>  = <span class="i">record</span>
+    <span class="v">left</span>  : <span class="v">PBTNode</span>;
+    <span class="v">right</span> : <span class="v">PBTNode</span>;
+    <span class="v">data</span>  : <span class="v">char</span>;
+  <span class="i">end</span>;
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">var</span>
+
+  <span class="v">G</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'G'</span>);
+  <span class="v">H</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'H'</span>);
+  <span class="v">I</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'I'</span>);
+  <span class="v">J</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'J'</span>);
+  <span class="v">K</span> : <span class="v">BTNode</span> = (<span class="v">left</span>:<span class="v">nil</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'K'</span>);
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+  <span class="v">D</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">H</span>; <span class="v">right</span>: @<span class="v">I</span>; <span class="v">data</span>:<span class="t">'D'</span>);
+  <span class="v">E</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">J</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'E'</span>);
+  <span class="v">F</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">K</span>; <span class="v">right</span>:<span class="v">nil</span>; <span class="v">data</span>:<span class="t">'F'</span>);
+  <span class="v">B</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">D</span>; <span class="v">right</span>: @<span class="v">E</span>; <span class="v">data</span>:<span class="t">'B'</span>);
+  <span class="v">C</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">F</span>; <span class="v">right</span>: @<span class="v">G</span>; <span class="v">data</span>:<span class="t">'C'</span>);
+
+<span class="c">// Korzeń drzewa</span>
+
+  <span class="v">A</span> : <span class="v">BTNode</span> = (<span class="v">left</span>: @<span class="v">B</span>; <span class="v">right</span>: @<span class="v">C</span>; <span class="v">data</span>:<span class="t">'A'</span>);
+
+  <span class="v">S</span>     : <span class="i">array</span>[<span class="n">0</span>..<span class="n">6</span>] <span class="i">of</span> <span class="v">PBTNode</span>; <span class="c">// stos</span>
+  <span class="v">sptr</span>  : <span class="v">Integer</span>;                   <span class="c">// wskaźnik stosu</span>
+  <span class="v">pp</span>,<span class="v">cp</span> : <span class="v">PBTNode</span>;
+
+<span class="i">begin</span>
+
+  <span class="v">S</span>[<span class="n">0</span>] := @<span class="v">A</span>;        <span class="c">// węzeł startowy</span>
+  <span class="v">sptr</span> := <span class="n">1</span>;
+
+  <span class="v">pp</span> := <span class="v">nil</span>;
+
+  <span class="i">while</span> <span class="v">sptr</span> &gt; <span class="n">0</span> <span class="i">do</span>
+  <span class="i">begin</span>
+    <span class="v">cp</span> := <span class="v">S</span>[<span class="v">sptr</span> - <span class="n">1</span>];
+    <span class="i">if</span> (<span class="v">pp</span> = <span class="v">nil</span>) <span class="i">or</span> (<span class="v">pp</span>^.<span class="v">left</span> = <span class="v">cp</span>) <span class="i">or</span> (<span class="v">pp</span>^.<span class="v">right</span> = <span class="v">cp</span>) <span class="i">then</span>
+    <span class="i">begin</span>
+      <span class="i">if</span> <span class="v">cp</span>^.<span class="v">left</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+      <span class="i">begin</span>
+        <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">cp</span>^.<span class="v">left</span>;
+        <span class="v">inc</span>(<span class="v">sptr</span>);
+      <span class="i">end</span>
+      <span class="i">else</span> <span class="i">if</span> <span class="v">cp</span>^.<span class="v">right</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+      <span class="i">begin</span>
+        <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">cp</span>^.<span class="v">right</span>;
+        <span class="v">inc</span>(<span class="v">sptr</span>);
+      <span class="i">end</span>
+    <span class="i">end</span>
+    <span class="i">else</span> <span class="i">if</span> <span class="v">cp</span>^.<span class="v">left</span> = <span class="v">pp</span> <span class="i">then</span>
+    <span class="i">begin</span>
+      <span class="i">if</span> <span class="v">cp</span>^.<span class="v">right</span> &lt;&gt; <span class="v">nil</span> <span class="i">then</span>
+      <span class="i">begin</span>
+        <span class="v">S</span>[<span class="v">sptr</span>] := <span class="v">cp</span>^.<span class="v">right</span>;
+        <span class="v">inc</span>(<span class="v">sptr</span>)
+      <span class="i">end</span>
+    <span class="i">end</span>
+    <span class="i">else</span>
+    <span class="i">begin</span>
+      <span class="v">write</span>(<span class="v">cp</span>^.<span class="v">data</span>,<span class="t">' '</span>);
+      <span class="v">dec</span>(<span class="v">sptr</span>);
+    <span class="i">end</span>;
+    <span class="v">pp</span> := <span class="v">cp</span>;
+  <span class="i">end</span>;
+
+  <span class="v">writeln</span>;
+<span class="i">end</span>. </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Code::Blocks</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="cpp"><pre><span class="c">// Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">// Data: 19.01.2013</span>
+<span class="c">// (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">//------------------------------</span>
+
+<span class="pp">#include &lt;iostream&gt;</span>
+
+<span class="i">using</span> <span class="i">namespace</span> <span class="v">std</span>;
+
+<span class="c">// Typ węzłów drzewa</span>
+
+<span class="i">struct</span> <span class="v">BTNode</span>
+{
+  <span class="v">BTNode</span> * <span class="v">left</span>;
+  <span class="v">BTNode</span> * <span class="v">right</span>;
+  <span class="i">char</span> <span class="v">data</span>;
+};
+
+<span class="c">// Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="v">BTNode</span> <span class="v">G</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'G'</span>};
+<span class="v">BTNode</span> <span class="v">H</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'H'</span>};
+<span class="v">BTNode</span> <span class="v">I</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'I'</span>};
+<span class="v">BTNode</span> <span class="v">J</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'J'</span>};
+<span class="v">BTNode</span> <span class="v">K</span> = {<span class="v">NULL</span>,<span class="v">NULL</span>,<span class="t">'K'</span>};
+
+<span class="c">// Tworzymy kolejnych ojców</span>
+
+<span class="v">BTNode</span> <span class="v">D</span> = { &amp;<span class="v">H</span>,  &amp;<span class="v">I</span>,<span class="t">'D'</span>};
+<span class="v">BTNode</span> <span class="v">E</span> = { &amp;<span class="v">J</span>,<span class="v">NULL</span>,<span class="t">'E'</span>};
+<span class="v">BTNode</span> <span class="v">F</span> = { &amp;<span class="v">K</span>,<span class="v">NULL</span>,<span class="t">'F'</span>};
+<span class="v">BTNode</span> <span class="v">B</span> = { &amp;<span class="v">D</span>,  &amp;<span class="v">E</span>,<span class="t">'B'</span>};
+<span class="v">BTNode</span> <span class="v">C</span> = { &amp;<span class="v">F</span>,  &amp;<span class="v">G</span>,<span class="t">'C'</span>};
+
+<span class="c">// Tworzymy korzeń drzewa</span>
+
+<span class="v">BTNode</span> <span class="v">A</span> = { &amp;<span class="v">B</span>,  &amp;<span class="v">C</span>,<span class="t">'A'</span>};
+
+<span class="i">int</span> <span class="v">main</span>()
+{
+  <span class="v">BTNode</span> * <span class="v">S</span>[<span class="n">7</span>];  <span class="c">// stos</span>
+  <span class="i">int</span> <span class="v">sptr</span>;          <span class="c">// wskaźnik stosu</span>
+  <span class="v">BTNode</span> *<span class="v">pp</span>, *<span class="v">cp</span>;
+
+  <span class="v">S</span>[<span class="n">0</span>] = &amp;<span class="v">A</span>;         <span class="c">// węzeł startowy</span>
+  <span class="v">sptr</span> = <span class="n">1</span>;
+
+  <span class="v">pp</span> = <span class="v">NULL</span>;
+
+  <span class="i">while</span>(<span class="v">sptr</span>)
+  {
+    <span class="v">cp</span> = <span class="v">S</span>[<span class="v">sptr</span> - <span class="n">1</span>];
+    <span class="i">if</span>(!<span class="v">pp</span> || <span class="v">pp</span>-&gt;<span class="v">left</span> == <span class="v">cp</span> || <span class="v">pp</span>-&gt;<span class="v">right</span> == <span class="v">cp</span>)
+    {
+      <span class="i">if</span>(<span class="v">cp</span>-&gt;<span class="v">left</span>)       <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">cp</span>-&gt;<span class="v">left</span>;
+      <span class="i">else</span> <span class="i">if</span>(<span class="v">cp</span>-&gt;<span class="v">right</span>) <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">cp</span>-&gt;<span class="v">right</span>;
+    }
+    <span class="i">else</span> <span class="i">if</span>(<span class="v">cp</span>-&gt;<span class="v">left</span> == <span class="v">pp</span>)
+    {
+      <span class="i">if</span>(<span class="v">cp</span>-&gt;<span class="v">right</span>) <span class="v">S</span>[<span class="v">sptr</span>++] = <span class="v">cp</span>-&gt;<span class="v">right</span>;
+    }
+    <span class="i">else</span>
+    {
+      <span class="v">cout</span> &lt;&lt; <span class="v">cp</span>-&gt;<span class="v">data</span> &lt;&lt; <span class="t">" "</span>;
+      <span class="v">sptr</span>--;
+    }
+    <span class="v">pp</span> = <span class="v">cp</span>;
+  }
+
+  <span class="v">cout</span> &lt;&lt; <span class="v">endl</span>;
+
+  <span class="i">return</span> <span class="n">0</span>;
+} </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Free Basic</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left">
+				<pre id="bas"><pre><span class="c">' Przechodzenie drzew binarnych DFS:postorder</span>
+<span class="c">' Data: 19.01.2013</span>
+<span class="c">' (C)2013 mgr Jerzy Wałaszek</span>
+<span class="c">'------------------------------</span>
+
+<span class="c">' Typ węzłów drzewa</span>
+
+<span class="i">Type</span> <span class="v">BTNode</span>
+  <span class="i">Left</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Right</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>
+  <span class="i">Data</span> <span class="i">As</span> <span class="i">String</span> * <span class="n">1</span>
+<span class="i">End</span> <span class="i">Type</span>
+
+<span class="c">' Tworzenie struktury drzewa rozpoczynamy od liści</span>
+
+<span class="i">Dim</span> <span class="v">G</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"G"</span>)
+<span class="i">Dim</span> <span class="v">H</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"H"</span>)
+<span class="i">Dim</span> <span class="v">I</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"I"</span>)
+<span class="i">Dim</span> <span class="v">J</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"J"</span>)
+<span class="i">Dim</span> <span class="v">K</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (<span class="n">0</span>, <span class="n">0</span>,<span class="t">"K"</span>)
+
+<span class="c">' Tworzymy kolejnych ojców</span>
+
+<span class="i">Dim</span> <span class="v">D</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">H</span>,@<span class="v">I</span>,<span class="t">"D"</span>)
+<span class="i">Dim</span> <span class="v">E</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">J</span>, <span class="n">0</span>,<span class="t">"E"</span>)
+<span class="i">Dim</span> <span class="v">F</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">K</span>, <span class="n">0</span>,<span class="t">"F"</span>)
+<span class="i">Dim</span> <span class="v">B</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">D</span>,@<span class="v">E</span>,<span class="t">"B"</span>)
+<span class="i">Dim</span> <span class="v">C</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">F</span>,@<span class="v">G</span>,<span class="t">"C"</span>)
+
+<span class="c">' Tworzymy korzeń drzewa</span>
+
+<span class="i">Dim</span> <span class="v">A</span> <span class="i">As</span> <span class="v">BTNode</span> =&gt; (@<span class="v">B</span>,@<span class="v">C</span>,<span class="t">"A"</span>)
+
+<span class="i">Dim</span> <span class="v">S</span>(<span class="n">6</span>) <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>  <span class="c">' stos</span>
+<span class="i">Dim</span> <span class="v">sptr</span> <span class="i">As</span> <span class="i">Integer</span>        <span class="c">' wskaźnik stosu</span>
+<span class="i">Dim</span> <span class="i">As</span> <span class="v">BTNode</span> <span class="i">Ptr</span>  <span class="v">pp</span>, <span class="v">cp</span>
+
+<span class="v">S</span>(<span class="n">0</span>) = @<span class="v">A</span>                  <span class="c">' węzeł startowy</span>
+<span class="v">sptr</span> = <span class="n">1</span>
+
+<span class="v">pp</span> = <span class="n">0</span>
+
+<span class="i">While</span> <span class="v">sptr</span> &gt; <span class="n">0</span>
+  <span class="v">cp</span> = <span class="v">S</span>(<span class="v">sptr</span> - <span class="n">1</span>)
+  <span class="i">If</span> (<span class="v">pp</span> = <span class="n">0</span>) <span class="i">Orelse</span> (<span class="v">pp</span>-&gt;<span class="i">Left</span> = <span class="v">cp</span>) <span class="i">Orelse</span> (<span class="v">pp</span>-&gt;<span class="i">Right</span> = <span class="v">cp</span>) <span class="i">Then</span>
+    <span class="i">If</span> <span class="v">cp</span>-&gt;<span class="i">Left</span> <span class="i">Then</span>
+    	<span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">cp</span>-&gt;<span class="i">Left</span>
+    	<span class="v">sptr</span> += <span class="n">1</span>
+    <span class="i">Elseif</span> <span class="v">cp</span>-&gt;<span class="i">Right</span> <span class="i">Then</span>
+      <span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">cp</span>-&gt;<span class="i">Right</span>
+      <span class="v">sptr</span> += <span class="n">1</span>	
+    <span class="i">End</span> <span class="i">If</span>
+  <span class="i">Elseif</span> <span class="v">cp</span>-&gt;<span class="i">Left</span> = <span class="v">pp</span> <span class="i">Then</span>
+    <span class="i">If</span> <span class="v">cp</span>-&gt;<span class="i">Right</span> <span class="i">Then</span>
+    	<span class="v">S</span>(<span class="v">sptr</span>) = <span class="v">cp</span>-&gt;<span class="i">Right</span>
+    	<span class="v">sptr</span> += <span class="n">1</span>
+    <span class="i">End</span> <span class="i">If</span>
+  <span class="i">Else</span>
+    <span class="i">Print</span> <span class="v">cp</span>-&gt;<span class="i">Data</span>;<span class="t">" "</span>;
+    <span class="v">sptr</span> -= <span class="n">1</span>
+  <span class="i">End</span> <span class="i">If</span>
+  <span class="v">pp</span> = <span class="v">cp</span>
+<span class="i">Wend</span>
+
+<span class="i">Print</span>
+
+<span class="i">End</span> </pre></pre></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" bgcolor="#F0F0F0"><b>Wynik</b></td>
+			</tr>
+			<tr>
+				<td style="text-align: left" class="program">H I D J E B K F 
+					G C A</td>
+			</tr>
+		</tbody></table></div>
+	<p>&nbsp;</p></div>
+	<h3>Podsumowanie</h3>
+<table id="table322" style="border-collapse: collapse" class="bl1" cellpadding="4" border="0">
+	<tbody><tr>
+		<td style="text-align: center"><b>Drzewo binarne</b></td>
+		<td style="text-align: center"><b>przejście pre-order</b></td>
+		<td style="text-align: center"><b>przejście in-order</b></td>
+		<td style="text-align: center"><b>przejście post-order</b></td>
+	</tr>
+	<tr>
+		<td><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_11.gif" width="213" height="151" border="0"></td>
+		<td><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_12.gif" width="213" height="151" border="0"></td>
+		<td><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_22.gif" width="213" height="151" border="0"></td>
+		<td><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/0109_30.gif" width="213" height="151" border="0"></td>
+	</tr>
+</tbody></table>
+<p>&nbsp;</p></div>
+<div class="bl1">
+  
+<p>&nbsp;</p>
+<hr size="1" color="#C0C0C0">
+<div align="left">
+  <table style="float: right; BORDER-COLLAPSE: collapse; padding-left:8px; padding-right:8px; padding-top:1px; padding-bottom:1px; cellPadding=" 4"="" border="0">
+    <tbody><tr>
+      <td><img src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/i-lo_budynek.jpg"></td><td valign="top"><p style="text-align: center" align="center">&nbsp;&nbsp;&nbsp;I Liceum Ogólnokształcące&nbsp;&nbsp;&nbsp;<br><span class="small">im. Kazimierza Brodzińskiego<br> w Tarnowie</span><br><span class="small">&#169;2019 mgr Jerzy Wałaszek</span></p></td>
+    </tr>
+  </tbody></table>
+</div>
+<span class="small">Dokument ten rozpowszechniany jest zgodnie z zasadami licencji<br>
+<b>GNU Free Documentation License</b>.</span><p>Pytania proszę przesyłać na adres email: <a href="mailto:i-lo@eduinf.waw.pl">i-lo@eduinf.waw.pl</a>
+</p>
+<p><span class="small">W artykułach serwisu są używane cookies. Jeśli nie chcesz ich otrzymywać,<br>
+zablokuj je w swojej przeglądarce.<br>
+<a target="_blank" href="https://policies.google.com/technologies/partner-sites?hl=pl">
+Informacje dodatkowe</a></span></p>
+
+</div>
+
+<script type="text/javascript">pcba()</script>
+
+<ins class="adsbygoogle adsbygoogle-noablate" style="display: none !important;" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0px;width:0px;height:0px;" frameborder="0"></iframe></ins></ins></ins><iframe id="google_osd_static_frame_7961077154860" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body><iframe id="google_esf" name="google_esf" src="Algorytmy%20i%20Struktury%20Danych%20-%20Przechodzenie%20drzew%20binarnych:%20DFS_pliki/zrt_lookup.html" style="display: none;" data-ad-client="ca-pub-2048408300128807"></iframe></html>
