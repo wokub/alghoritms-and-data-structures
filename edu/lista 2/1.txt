@@ -1,0 +1,7 @@
+Bisekcja : zbior liczb dzielimy na pó³. Jeœli liczba jest wiêksza od naszej po³owy, dzielimy t¹ wiêksz¹ po³owê itd.
+
+I krok 		: n/2
+II krok 	: n/4
+III krok	: n/8
+tj.		: n/(2^i) = 1
+n = 2^i = > n = log
