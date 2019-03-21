@@ -33,19 +33,19 @@ void inorder_do(node* t, void f(node* x)) {
     
     bool done = false;
 	node* temp = t;
-	std::stack<node*> s;
+	std::stack<node*> s;					// stos wskazań węzłów
 	
 	while (!done) {
 		if (temp != NULL) {
 			s.push(temp);
-			temp = temp ->left;
+			temp = temp ->left;			// bieżący węzeł staje się lewy	
 		} else {
-			if (!s.empty()) {
-				temp = s.top();
-				s.pop();
+			if (!s.empty()) {			// pętla jest wykonywana, jeśli jest coś na stosie lub temp wskazuje węzeł drzewa
+				temp = s.top();			// wskazanie bieżącego węzła na stosie
+				s.pop();			// wskazanie usuwane ze stosu
 				
 				f(temp);
-				temp = temp->right;
+				temp = temp->right;		// bieżący węzeł staje się prawy
 			} else
 				done = true;
 		}
