@@ -27,53 +27,7 @@ void insert(node *& t, int x) {
 	*t1 = new node(x);
 }
 
-/*
-void inorder_do(node *t, void f(node*))
-{
-	bool leftChecked = false;
-	
-	while(t)
-	{
-		if(!leftChecked)
-		{
-			while(t->m_left)
-			{
-				t = t->m_left;
-			}
-		}
-			
-		f(t);
-		leftChecked = true;
-		if(t->m_right)
-		{
-			leftChecked = false;
-			t = t->m_right;
-			
-		}
-		else if(t->m_parent)
-		{
-			while(t->m_parent && t == t->m_parent->m_right)
-			{
-				t = t->m_parent;
-			}
-			
-			if(!t->m_parent)
-			{
-				break;
-			}
-			t = t->m_parent;
-		}
-		else
-		{
-			break;
-		}
-	}
-}
-*/
-
-
-void inorder_do(node *t, void f(node*))
-{
+void inorder_do(node *t, void f(node*)) {
 	bool leftChecked = false;
 
 	while(t) {
