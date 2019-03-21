@@ -27,10 +27,10 @@ void insert(node *& t, int x) {
 void inorder_do(node * t, void f(node *)) {
     node *temp = t;
 
-    if(temp) {
-        inorder_do(temp ->left, f);
-        f(temp);
-        inorder_do(temp ->right, f);
+    if(temp) {					// jeśli false, zakończ rekurencję
+        inorder_do(temp ->left, f);		// przejście rekurencyjne przez lewe poddrzewo
+        f(temp);				// węzeł wskazany przez temp
+        inorder_do(temp ->right, f);		// przejście rekurencyjne przez prawe poddrzewo
     }
 }
 
