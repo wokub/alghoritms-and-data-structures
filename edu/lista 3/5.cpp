@@ -26,7 +26,7 @@ void merge(int arr[], int start, int mid, int end) {
     }
 }
 
-void mergeSort(int arr[], int l, int r) {
+void mergesort(int arr[], int l, int r) {
 
     if (l < r) {
         int mid = (l + r) / 2;
@@ -41,7 +41,7 @@ int main() {
 
     int n = sizeof(t) / sizeof(t[0]);
 
-    mergeSort(t, 0, n-1);
+    mergesort(t, 0, n-1);
 
     for(int x : t) { std::cout << x << " "; }
 
