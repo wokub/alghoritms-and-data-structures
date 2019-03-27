@@ -1,23 +1,25 @@
-#include <limits>
+#include <climits>
 #include <iostream>
 
-void insertionSort(int a[], int N) {
+void insertionSort(int a[], int n) {
     int v;
-    a[-1] = std::numeric_limits<int>::min();
+    a[-1] = INT_MIN;
 
-    for (int i = 2; i <= N; i++) {
+    for (int i = 1; i <= n; i++) {
         v = a[i];
         int j = i;
+        
         while (a[j-1] > v) {
             a[j] = a[j-1];
             j--;
         }
-       a[j] = v;
+        
+        a[j] = v;
     }
 }
 
 int main() {
-    int tab[] = {5, 1, 11, 22, 4, 2, 3, -11};
+    int tab[] = {3, -1, 2, 5, 8, 0, -4, 10};
     int k = sizeof(tab)/sizeof(tab[0]);
 
     insertionSort(tab, k);
