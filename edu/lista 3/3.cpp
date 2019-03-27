@@ -31,8 +31,7 @@ void insertion_sort(lnode *&L) {
                 value ->next = sortedL;
                 sortedL = value;
             } else {
-
-                lnode* curSorted = sortedL;
+		lnode* curSorted = sortedL;
 
                 while (curSorted) {
                     if (!curSorted ->next || value ->key < curSorted ->next ->key) {
@@ -51,20 +50,22 @@ void insertion_sort(lnode *&L) {
 }
 
 int main() {
-    lnode *l = NULL;
+    	lnode *l = NULL;
 
 	l = new lnode(7, l);
 	l = new lnode(5, l);
-    l = new lnode(2, l);
+        l = new lnode(2, l);
 	l = new lnode(3, l);
-    l = new lnode(2, l);
+        l = new lnode(2, l);
 	l = new lnode(1, l);
 	l = new lnode(9, l);
-    cout << "Lista przed posortowaniem:\n ";
-    print(l);
-    insertion_sort(l);
-    cout << "Lista po posortowaniu:\n ";
-    print(l);
+    	
+	cout << "Lista przed posortowaniem:\n ";
+    	print(l);
+    
+	insertion_sort(l);
+    	cout << "Lista po posortowaniu:\n ";
+    	print(l);
 
-    return 0;
+    	return 0;
 }
