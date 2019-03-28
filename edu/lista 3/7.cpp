@@ -1,41 +1,46 @@
 #include <iostream>
 #include <queue>
 
-class node
-{
+class node {
     public:
-    int x;
-    node *left;
-    node *right;
+    	int x;
+    	node *left;
+    	node *right;
 
-    node(int x0, node *l = nullptr, node *r = nullptr)
-        : x(x0), left(l), right(r)
-    {}
+    	node(int x0, node *l = nullptr, node *r = nullptr)
+        	: x(x0), left(l), right(r) {}
 };
 
-void insert(node *&t, int x)
-{
+void insert(node *&t, int x) {
     node **t1 = &t;
-    while (*t1)
-        if (x < (*t1)->x)
-            t1 = &((*t1)->left);
+	
+    while (*t1) {
+        if (x < (*t1) ->x)
+            t1 = &(( *t1 ) ->left);
         else
-            t1 = &((*t1)->right);
+            t1 = &(( *t1 ) ->right);
+    }
     *t1 = new node(x);
 }
 
-int poziom(node* root, int klucz) {
+int poziom(node* root, int klucz, int level = 1) {
     node *n = root;
-	int level = 1; // wyznacznik poziomu
+    //; // wyznacznik poziomu
 
-	while (n != nullptr && n->x != klucz) {
-		level++;
-		if (klucz < n->x)
-			n = n->left;
-		else
-            n = n->right;
+    while (n != nullptr && n ->x != klucz) {
+	level++;
+		
+	if (klucz < n ->x) {
+		n = n ->left;
+	} else {
+            n = n ->right;
 	}
-    return n ? level : 0; // jesli n jest nullem to zwroc 0 jak nie to zwroc level
+    }
+	
+    if(n == nullptr) {
+        return 0;
+    } else 
+	return level;
 }
 
 int main() {
