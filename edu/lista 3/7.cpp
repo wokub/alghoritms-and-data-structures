@@ -25,7 +25,6 @@ void insert(node *&t, int x) {
 
 int poziom(node* root, int klucz, int level = 1) {
     node *n = root;
-    //; // wyznacznik poziomu
 
     while (n != nullptr && n ->x != klucz) {
 	level++;
