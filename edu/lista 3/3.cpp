@@ -9,21 +9,6 @@ struct lnode {
     lnode(int n=0, lnode *l = NULL) : key(n), next(l) {};
 };
 
-
-
-void print(lnode *L) {
-
-    while (L != NULL) {
-        cout << L ->key << "  ";
-
-        L = L ->next;
-    }
-
-    cout << endl;
-}
-
-
-
 void insertion_sort(lnode *&L) {
 
     if (L && L->next) {
@@ -55,7 +40,16 @@ void insertion_sort(lnode *&L) {
     }
 }
 
+void print(lnode *L) {
 
+    while (L != NULL) {
+        cout << L ->key << "  ";
+
+        L = L ->next;
+    }
+
+    cout << endl;
+}
 
 int main() {
     	lnode *l = NULL;
