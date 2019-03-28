@@ -25,7 +25,6 @@ void insert(node *&t, int x) {
 
 int poziom(node* root, int klucz, int level = 1) {
     node *n = root;
-    //; // wyznacznik poziomu
 
     while (n != nullptr && n ->x != klucz) {
 	level++;
@@ -44,14 +43,14 @@ int poziom(node* root, int klucz, int level = 1) {
 }
 
 int main() {
-    node* root = new node(5);
+    node* root = new node(2);
     insert(root, 1);
     insert(root, 8);
     insert(root, 3);
     insert(root, 0);
     insert(root, 9);
 
-    std::cout << "Poziom 5: " << poziom(root, 5) << std::endl;
+    std::cout << "Poziom 2: " << poziom(root, 2) << std::endl;
     std::cout << "Poziom 1: " << poziom(root, 1) << std::endl;
     std::cout << "Poziom 8: " << poziom(root, 8) << std::endl;
     std::cout << "Poziom 3: " << poziom(root, 3) << std::endl;
