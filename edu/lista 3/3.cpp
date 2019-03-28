@@ -14,9 +14,9 @@ struct lnode {
 void print(lnode *L) {
 
     while (L != NULL) {
-        cout << L->key << "  ";
+        cout << L ->key << "  ";
 
-        L = L->next;
+        L = L ->next;
     }
 
     cout << endl;
@@ -31,8 +31,7 @@ void insertion_sort(lnode *&L) {
         lnode* unsorted = L;
 
         while (unsorted) {
-            lnode* val = unsorted;
-            
+            lnode* val = unsorted; 
             unsorted = unsorted ->next;
 
             if (!sorted || val ->key <= sorted ->key) {
@@ -42,15 +41,11 @@ void insertion_sort(lnode *&L) {
                 lnode* current = sorted;
 
                 while (current) {
-                    
                     if (!current ->next || val ->key < current ->next ->key) {
                         val ->next = current ->next;
-
-                        current ->next = val;
-                        
+                        current ->next = val;                        
                         break;
                     }
-
                     current = current ->next;
                 }
             }
