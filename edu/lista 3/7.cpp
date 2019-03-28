@@ -24,19 +24,18 @@ void insert(node *&t, int x) {
 }
 
 int poziom(node* root, int klucz, int level = 1) {
-    node *n = root;
 
-    while (n != nullptr && n ->x != klucz) {
+    while (root != nullptr && root ->x != klucz) {
 	level++;
 		
-	if (klucz < n ->x) {
-		n = n ->left;
+	if (klucz < root ->x) {
+	    root = root ->left;
 	} else {
-            n = n ->right;
+            root = root ->right;
 	}
     }
 	
-    if(n == nullptr) {
+    if(root == nullptr) {
         return 0;
     } else 
 	return level;
