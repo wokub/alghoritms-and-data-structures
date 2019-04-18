@@ -1,6 +1,5 @@
 #include <iostream>
 
-// Funkcja pozwalająca uzyskać maksymalną wartość t[]
 int max(int t[], int n) {
     int m = t[0];
     for (int i = 1; i < n; i++)
@@ -31,8 +30,6 @@ void countingSort(int t[], int n, int c) {
 void radixSort(int t[], int n) {
     int m = max(t, n);
 
-    // Zamiast podania liczby cyfr, przekazywana jest exponenta. 
-    // Exp wynosi 10 ^ i gdzie i jest bieżącą liczbą cyfr
     for (int c = 1; m/c > 0; c *= 10)
         countingSort(t, n, c);
 }
