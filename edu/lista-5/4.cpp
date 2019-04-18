@@ -27,12 +27,22 @@ void countingSort(int t[], int n, int c) {
         t[i] = tmp[i];
 }
 
+
+
+
+
+
+
+
+
 void radixSort(int t[], int n) {
     int m = max(t, n);
 
     for (int c = 1; m/c > 0; c *= 10)
         countingSort(t, n, c);
 }
+
+
 
 int main() {
     int t[] = {1,34,123,321,432,132,
