@@ -49,9 +49,8 @@ int main() {
                 543,651,91,32,987,910,
                 643,641,12,342,498,987,
                 965,122,121,431,350};
-    int n = sizeof(t)/sizeof(t[0]);
     
-    radixSort(t, n);
+    radixSort(t, sizeof(t)/sizeof(t[0]));
     
     return 0;
 }
