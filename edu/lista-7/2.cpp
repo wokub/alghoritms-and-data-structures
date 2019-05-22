@@ -1,18 +1,18 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 int f(int n) {
     int temp = 0;
-    
-    while(n) {
-        temp += n & 1;
-        n >>= 1;
+
+    while(n > 0) {
+        temp += n % 2;
+        n /= 2;
     }
-    
+
     return temp;
 }
 
 int main() {
-    std::cout << countSetBits(10);
+    std::cout << f(10);
 
     return 0;
 }
