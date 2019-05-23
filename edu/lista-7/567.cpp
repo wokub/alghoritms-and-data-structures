@@ -18,15 +18,18 @@ public:
         }
     }
 
-    // Zwracamy reprezentanta i-tego zbioru
+    // Find(x) zwraca reprezentanta podzbioru, do którego należy element x.
     int Find(int i)
     {
+        // Wywołujemy rekurencyjnie aż podana liczba znajdzie się w danym podzbiorze
         if (parent[i] == i)
-            return i; // Zwracamy korzeń
+            return i; 
 
         return parent[i] = Find(parent[i]); // Korzeń -> Ojciec "i"
     }
 
+    // Union(i, j) łączymy ze sobą podzbiory zawierające elementy x i y w jeden nowy podzbiór.
+    // Reprezentantem nowego podzbioru staje się jeden z reprezentantów poprzednich podziorów.
     void Union(int i, int j)
     {
         if (rank[Find(i)] != Find(j))           // Reprezentanci różni

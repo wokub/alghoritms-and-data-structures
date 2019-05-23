@@ -4,8 +4,8 @@ int f(int n) {
     int temp = 0;
 
     while(n > 0) {
-        temp += n % 2;
-        n /= 2;
+        temp += n % 2;  // najmniej znaczący bit
+        n /= 2;         // kolejny bit
     }
 
     return temp;
