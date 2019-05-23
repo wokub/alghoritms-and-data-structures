@@ -16,3 +16,13 @@ int main() {
 
     return 0;
 }
+
+
+/*
+Wykonania pętli while dla f(10)
+1.  temp = 0 n = 5
+2.  temp = 1 n = 2
+3.  temp = 1 n = 1
+4.  temp = 2 n = 0
+    n > 0 = false
+*/

@@ -108,10 +108,12 @@ int numOfIslands(const bool t[N][N], int n)
             // Sprawdzamy występowanie 1 w naszego elementu. Jeśli tak, scalamy wyspę.
             if (!t[i][j])
                 continue;
+            
             if (i + 1 < n && t[i + 1][j])
             {
                 unionFind.Union(i * n + j, (i + 1) * n + j);
             }
+            
             if (i - 1 >= 0 && t[i - 1][j])
             {
                 unionFind.Union(i * n + j, (i - 1) * n + j);
