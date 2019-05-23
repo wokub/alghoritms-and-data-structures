@@ -31,19 +31,21 @@ public:
     // Union(i, j) łączymy ze sobą podzbiory zawierające elementy x i y w jeden nowy podzbiór.
     // Reprezentantem nowego podzbioru staje się jeden z reprezentantów poprzednich podziorów.
     void Union(int i, int j)
-    {
-        if (rank[Find(i)] != Find(j))           // Reprezentanci różni
-        {
-            parent[Find(i)] = Find(j);          // Łączymy dwie wyspy
-        }
-        else if (rank[Find(i)] < rank[Find(j)])
-        {
-            parent[Find(j)] = Find(i);
-        }
-        else
-        { // Rangi takie same
-            parent[Find(i)] = Find(j);          // Łączymy dwie wyspy
-            rank[Find(j)]++;                    // zwiększamy rangę drugiego reprezentanta
+    {   
+        if(Find(i) != Find(j) {
+            if (rank[Find(i)] < rank[Find(j)])           // Reprezentanci różni
+            {
+                parent[Find(i)] = Find(j);          // Łączymy dwie wyspy
+            }
+            else if (rank[Find(j)] < rank[Find(i)])
+            {
+                parent[Find(j)] = Find(i);
+            }
+            else
+            { // Rangi takie same
+                parent[Find(i)] = Find(j);          // Łączymy dwie wyspy
+                rank[Find(j)]++;                    // zwiększamy rangę drugiego reprezentanta
+            }
         }
     }
 
