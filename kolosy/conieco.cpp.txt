@@ -1,0 +1,185 @@
+#include <iostream>
+
+
+/* -------------------- Zadanie1 -------------------------
+1. Zapisz warunki jakie musz¹ spe³niaæ klucze drzewa BST
+
+Odp: Klucz w ka¿dym wêzle musi byæ wiêkszy lub równy od klucza w lewym poddrzewie oraz mniejszy lub równy od klucza w prawym poddrzewie.
+----------------------- Zadanie2 -------------------------
+2. Napisz procedurê node* find(node* tree,int x), która zwraca wskaŸnik na wêze³ zawieraj¹cy x lub NULL jeœli nie ma takiego wêz³a
+
+Odp:
+node* find(node* tree,int x) //non-recursive version
+{
+    while(tree && tree->key != x)
+        tree = x > tree->key ? tree->right : tree->left; 
+    return tree;
+}
+node* find(node* tree,int x) //recursive
+{
+    if(!tree || tree->key == x)
+        return tree;
+    return find(x > tree->key ? tree->right : tree->left,x);
+}
+----------------------- Zadanie3 -------------------------
+3. Napisz procedurê void insert(node*& tree,int x) (dodaje do drzewa tree klucz x)
+
+Odp:
+void insert(node*& tree,int x) //recursive
+{
+    if(!tree)
+        tree = new node(x,nullptr,nullptr);
+    else
+        insert(x > tree->key ? tree->right : tree->left,x);
+}
+void insert_iterative(node*& tree,int x)
+{
+    node** nd = &tree;
+    while(*nd)
+        nd = x > (*nd)->key ? &(*nd)->right : &(*nd)->left;
+    *nd = new node(x,nullptr,nullptr);
+}
+----------------------- Zadanie4 -------------------------
+4. Drzewo BST o ró¿nych kluczach mo¿na odtworzyæ z listy par klucz_wêz³a:klucz_jca
+    a) Narysuj drzewo BST reprezentowane przez listê par: 1:2, 2:4, 3:2, 4:5, 6:7, 7:9, 8:7, 9:5
+    b) Wypisz jego klucze w porz¹dku inorder
+    c) Wypisz jego klucze w porz¹dku preorder
+    d) Wypisz jego klucze w porz¹dku postorder
+
+Odp:
+
+----------------------- Zadanie5 -------------------------
+5. Napisz procedurê void wypisz(node* tree,int order=0), która wypisuje klucze drzewa tree w porz¹dku inorder gdy order = 0, preorder gdy order=1, postorder gdy order=2
+
+Odp:
+void wypisz(node* tree,int order=0)
+{
+    if(tree)
+    {
+        switch(order)
+        {
+            case 0:
+                wypisz(tree->left,order);
+                std::cout << tree->key << " ";
+                wypisz(tree->right,order);
+                break;
+            case 1:
+                std::cout << tree->key << " ";
+                wypisz(tree->left,order);
+                wypisz(tree->right,order);
+                break;
+            case 2:
+                wypisz(tree->left,order);
+                wypisz(tree->right,order);
+                std::cout << tree->key << " ";
+                break;
+            default:
+                break;
+        }
+    }
+}
+----------------------- Zadanie6 -------------------------
+6. Jakie informacje przechowujemy w wêŸle drzewa czerwono-czarnego? Podaj definicjê drzewa czerwono czarnego. Zadeklaruj strukturê RBnode tak, by dziedziczy³a z node. Czy mo¿na dla niej u¿yæ funkcji napisanych w zadaniach 2,3 i 5?
+
+Odp: 
+    1.Przechowujemy informacje jak w drzewie BST tylko jeszcze potrzebujemy przechowywaæ kolor wêz³a, w naszym przypadku jest to bool(mo¿e równie¿ byæ znak(char)).
+    2. Drzewem czerwono czarnym nazywamy drzewo takie ¿e:
+        1. Ka¿dy wêze³ jest czerwony lub czarny
+        2. Korzeñ jest czarny.
+        3. Wszystkie liœcia(null pointery) s¹ czarne
+        4. Jeœli wêze³ jest czerwony wtedy jego dzieci musz¹ byæ czarne
+        5. Ka¿da œcie¿ka z dowolnego wêz³a do liœcia(nullptr) ma dok³adnie tak¹ sam¹ iloœæ czarnych wêz³ów(czyli tak¹ sam¹ czarn¹ g³êbokoœæ)
+    3.
+        struct RBnode : public node
+        {
+            RBnode(int k,node* l=nullptr,node* r=nullptr,bool red=1) : node(k,l,r), m_red(red) {}
+            bool m_red;
+        };
+    4.  2,5 - tak, 3 - nie.
+*/
+struct node
+{
+    node(int k,node* l,node* r) : key(k),left(l),right(r) {}
+
+    int key;
+    node* left;
+    node* right;
+};
+struct RBnode : public node
+{
+    RBnode(int k,node* l=nullptr,node* r=nullptr,bool red=1) : node(k,l,r), m_red(red) {}
+    bool m_red;
+};
+void wypisz(node* tree,int order=0)
+{
+    if(tree)
+    {
+        switch(order)
+        {
+            case 0:
+                wypisz(tree->left,order);
+                std::cout << tree->key << " ";
+                wypisz(tree->right,order);
+                break;
+            case 1:
+                std::cout << tree->key << " ";
+                wypisz(tree->left,order);
+                wypisz(tree->right,order);
+                break;
+            case 2:
+                wypisz(tree->left,order);
+                wypisz(tree->right,order);
+                std::cout << tree->key << " ";
+                break;
+            default:
+                break;
+        }
+    }
+}
+void insert(node*& tree,int x)
+{
+    if(!tree)
+        tree = new node(x,nullptr,nullptr);
+    else
+        insert(x > tree->key ? tree->right : tree->left,x);
+}
+void insert_iterative(node*& tree,int x) 
+{
+    node** nd = &tree;
+    while(*nd)
+        nd = x > (*nd)->key ? &(*nd)->right : &(*nd)->left;
+    *nd = new node(x,nullptr,nullptr);
+}
+node* find(node* tree,int x)
+{
+    if(!tree || tree->key == x)
+        return tree;
+    return find(x > tree->key ? tree->right : tree->left,x);
+}
+void inorder(node* tree)
+{
+    if(tree)
+    {
+        inorder(tree->left);
+        std::cout << tree->key << " ";
+        inorder(tree->right);
+    }
+}
+
+int main()
+{
+    node* tree = nullptr;
+    RBnode test(5);
+    wypisz(&test);
+    std::cout << std::endl;
+    insert_iterative(tree,3);
+    insert_iterative(tree,4);
+    insert_iterative(tree,5);
+    insert_iterative(tree,1);
+    wypisz(tree);
+    std::cout << std::endl;
+    wypisz(tree,1);
+    std::cout << std::endl;
+    wypisz(tree,2);
+    std::cout << std::endl;
+}
