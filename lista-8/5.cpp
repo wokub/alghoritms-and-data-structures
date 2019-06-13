@@ -1,11 +1,10 @@
-#include <vector>
 #include <iostream>
 
 using namespace std;
 
-bool move(int** tab, const int& tab_size, int option, int x, int y, int& pos_x, int& pos_y)
+bool move(int** tab, const int& tab_size, int mv, int x, int y, int& pos_x, int& pos_y)
 {
-    switch (option) {
+    switch (mv) {
         case 1:
             pos_x = x + 1;
             pos_y = y - 2;
@@ -40,22 +39,23 @@ bool move(int** tab, const int& tab_size, int option, int x, int y, int& pos_x, 
             break;
     }
     
-    // sprawdzamy, kolejno czy nie wykraczamy poza tablicę x, y oraz czy pole było już odwiedzone
+    // sprawdzamy, kolejno czy nie wykraczamy poza tablicę x z lewej / prawej strony, y z lewej / prawej strony oraz czy pole było już odwiedzone
     if (0 <= pos_x && pos_x < tab_size && 0 <= pos_y && pos_y < tab_size && tab[pos_x][pos_y] == 0)
         return true;
     else
 		return false;
 }
 
-bool horse(int** tab, const int& tab_size, int x, int y, int n)
+bool chessHorse(int** tab, const int& tab_size, int x, int y, int n)
 {
-    int pos_x, pos_y, option;
+    int pos_x, pos_y;
     
     tab[x][y] = n; // Ustawiamy element tablicy jako n-ty ruch
     
-    // Sprawdzamy czy numer jest równy rozmiarowi tablice, jeśli tak, koniec algorytmu
+    // Sprawdzamy czy numer kroku jest równy rozmiarowi tablicy
     if (n == tab_size * tab_size)
     {
+		// Wypisanie
         for (int i = 0; i < tab_size; i++)
         {
             for (int j = 0; j < tab_size; j++)
@@ -65,53 +65,58 @@ bool horse(int** tab, const int& tab_size, int x, int y, int n)
         }
         return 1;
     }
-    else	// W innym przypadku wykonujemy move
+    else
     {
-        // uruchamiamy wszystkie case'y
-        for (option = 1; option < 9; option++)
-            if (move(tab, tab_size, option, x, y, pos_x, pos_y) == true)
+        // Uruchamiamy wszystkie case'y
+        for (int mv = 1; mv < 9; mv++)
+            if (move(tab, tab_size, mv, x, y, pos_x, pos_y) == true)
                 
                 // Kontynuujemy rekursję aż do przebycia całej szachownicy
-                if (horse(tab, tab_size, pos_x, pos_y, n + 1) == true)
+                if (chessHorse(tab, tab_size, pos_x, pos_y, n + 1) == true)
                     return true;
-        tab[x][y] = 0;
+        tab[x][y] = 0; // Jeśli nie ma możliwych ruchów, cofamy do poprzedniego i szukamy kolejnych możliwych
     }
     
     return false;
 }
 
-// Wypełniamy tablicę zerami
+// Wypełniamy tablicę zerami, zapobiegając tablicy z wypełnieniem
 void clearTab(int** tab, const int& tab_size)
 {
-    for (int i = 0; i<tab_size; i++)
-        for (int j = 0; j<tab_size; j++)
+    for (int i = 0; i < tab_size; i++)
+        for (int j = 0; j < tab_size; j++)
             tab[i][j] = 0;
 }
 
 int main(int argc, const char * argv[]) {
     int max;
     
-    std::cout << "Podaj rozmiar:\t";
+    std::cout << "Podaj rozmiar: ";
     std::cin >> max;
-    // tworzymy szachownicę, max * max
+    // tworzymy szachownicę
     int** tab = new int*[max];
+
     for (int i = 0; i < max; i++)
     {
         tab[i] = new int[max];
     }
+    
     int start_x, start_y;
-    std::cout << "Wpisz pole startowe (x,y)\t";
-    std::cin >> start_x>> start_y;
+    
+    std::cout << "Wpisz pole startowe (x,y) ";
+    std::cin >> start_x >> start_y;
     
     clearTab(tab, max);
-    std::cout << "\n(" << start_x << ", " << start_y << ")\n";
-    horse(tab, max, start_x, start_y, 1);
     
-    for (int i = 0; i < max; i++) {
+    std::cout << "\n(" << start_x << ", " << start_y << ")\n";
+    
+    chessHorse(tab, max, start_x, start_y, 1);
+    
+    for (int i = 0; i < max; i++) 
+    {
         delete[] tab[i];
     }
     delete[] tab;
     
-    std::cin.get();
     return 0;
 }
